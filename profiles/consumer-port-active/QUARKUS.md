@@ -1,8 +1,10 @@
 # Quarkus target conventions (active reference)
 
-## House style (authoritative)
+Product-specific profile for the Fan360 consumer port. Murphy core stays domain-neutral; see `skills/murphy/WORKFLOW.md` → **Non-production-first**.
 
-Follow the fundamental patterns shared by:
+## House style (this product)
+
+Follow the fundamental patterns shared by these Fan360 peer services:
 
 - `reporting-service`
 - `email-service`
@@ -11,11 +13,20 @@ Follow the fundamental patterns shared by:
 
 Details differ across those repos; copy the shared basics. Escalate industry-standard conflicts for discussion. Embellishments welcome. Behavior Ledger governs *what*; peer idioms govern *how*.
 
-## Delivery posture (QA-first)
+## Delivery posture
 
-- Implementation and Story tests run against QA / local / Testcontainers first.
-- No prod cutover or live group join until rehearsal gates pass.
-- Prefer peer Quarkus wiring; if Behavior Ledger semantics (e.g. custom Failure topics) conflict with a peer’s stock DLQ, stop and discuss.
+Applies Murphy’s **non-production-first** rule:
+
+- Implementation and Story tests run in non-production first (local / CI / Testcontainers / mapped env).
+- No production group join or cutover until rehearsal gates pass.
+- Prefer peer Quarkus wiring; if Behavior Ledger semantics conflict with a peer pattern (e.g. stock DLQ), stop and discuss.
+
+### Env mapping (this product)
+
+| Murphy term | Fan360 instance |
+|-------------|-----------------|
+| Non-production | QA (+ local / Testcontainers) |
+| Production | Live cutover |
 
 ## Stack pins
 

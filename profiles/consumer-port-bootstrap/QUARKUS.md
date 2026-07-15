@@ -1,8 +1,10 @@
 # Quarkus target conventions (bootstrap reference)
 
-## House style (authoritative)
+Product-specific profile for the Fan360 consumer port. Murphy core stays domain-neutral; see `skills/murphy/WORKFLOW.md` → **Non-production-first**.
 
-Follow the fundamental patterns shared by:
+## House style (this product)
+
+Follow the fundamental patterns shared by these Fan360 peer services:
 
 - `reporting-service`
 - `email-service`
@@ -13,11 +15,22 @@ Details differ across those repos; copy the shared basics (stack, Maven/Jenkins,
 
 Behavior Ledger = *what* to preserve. Peer Quarkus idioms = *how* to code it. If those conflict, discuss — do not invent a silent third style.
 
-## Delivery posture (QA-first)
+## Delivery posture
 
-- Do **not** require prod throughput or live traffic numbers to freeze the playbook or open coding under `consumer-port-active`.
-- Live `fan360-consumer` stays untouched until QA → rehearsal → cutover.
-- Ops/env confirmation of optional/dead paths may be deferred to QA with an explicit owner (not a silent skip).
+Applies Murphy’s **non-production-first** rule:
+
+- Do **not** require production throughput or live traffic numbers to freeze the playbook or open coding under `consumer-port-active`.
+- Prove discovery/architecture against code, fixtures, and non-production evidence.
+- Production / live legacy consumer stays untouched until non-production verification → rehearsal → cutover.
+
+### Env mapping (this product)
+
+| Murphy term | Fan360 instance |
+|-------------|-----------------|
+| Non-production | QA (+ local / Testcontainers) |
+| Production | Live `fan360-consumer` / prod cutover |
+
+Ops confirmation of optional/dead paths may be deferred to non-production with an explicit owner (not a silent skip).
 
 ## Stack pins
 

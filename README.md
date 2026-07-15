@@ -8,7 +8,7 @@ Specification-Driven Development orchestration for Cursor.
 
 `/murphy` is the UI. The TypeScript controller owns the workflow: state, gates, worktrees, models, evidence, leases, and recovery. Intern, Junior, Senior, Architect, and Principal launch as top-level `@cursor/sdk` agents with explicit models and isolated worktrees. Skills guide behavior. They do not enforce it.
 
-The first proving ground is a consumer-port profile set. Consumer-specific Jira fields, Quarkus rules, and regression gates live in profiles, never in the core.
+The first proving ground is a consumer-port profile set. Consumer-specific Jira fields, Quarkus rules, peer services, and env names (e.g. QA) live in profiles, never in the core. Core delivery posture is **non-production-first** — profiles map that to concrete environments.
 
 ## How a run moves
 

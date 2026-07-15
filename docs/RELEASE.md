@@ -1,5 +1,33 @@
 # Release
 
+## v0.1.5 — non-production-first in core
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.1.5` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.1` |
+| State schema version | `1` |
+| Git tag | `v0.1.5` |
+| Git SHA | _(recorded after tag)_ |
+| Qualification | Unchanged from v0.1.0; see `docs/QUALIFICATION-REPORT.md` |
+
+### Changes since v0.1.4
+
+- Core `WORKFLOW.md`: **non-production-first** posture (domain-neutral; no vendor env names)
+- Consumer-port profiles `1.1.1`: map non-production → Fan360 QA; keep peer house style / repo pins in the profile only
+- README clarifies profiles hold product env names and peer lists
+
+### Install this release
+
+```bash
+git checkout v0.1.5
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.1.5
+```
+
 ## v0.1.4 — peer house style + QA-first profiles
 
 | Field | Value |

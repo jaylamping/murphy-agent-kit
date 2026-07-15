@@ -1,8 +1,9 @@
-version: "1.1.0"
+version: "1.1.1"
 name: consumer-port-active
 description: >
   Active implementation profile after discovery/playbook freeze.
-  Peer Quarkus house style; QA-first delivery; qualified hard maxima for parallel lanes.
+  Fan360 peer Quarkus house style; Murphy non-production-first (QA locally);
+  qualified hard maxima for parallel lanes.
 terminology:
   epic: Epic
   story: Story

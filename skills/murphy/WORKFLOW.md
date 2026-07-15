@@ -41,3 +41,13 @@ All find/where/search/trace/inventory/locate tasks go to Intern unless evidence 
 ## Stop conditions
 
 Ambiguity, scope drift, failed tests, missing evidence, tracker mismatch, policy denial, credential issues, or Principal escalate → pause and escalate per `packages/contracts/escalation.json`.
+
+## Non-production-first (core posture)
+
+Murphy does not assume any vendor's environment names. Default delivery posture:
+
+1. Prove work in **non-production** (local, CI, staging, or whatever the active profile names).
+2. Do **not** require production traffic, throughput, or live cutover evidence to freeze specs/playbooks or start implementation.
+3. Production touch / cutover only after non-production verification and any profile-defined rehearsal gates.
+
+Product profiles may map “non-production” to a concrete env (e.g. QA) and add peer-service house styles. Those mappings stay in `profiles/<name>/`, never in the core.
