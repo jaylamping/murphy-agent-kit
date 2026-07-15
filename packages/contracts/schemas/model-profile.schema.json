@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/model-profile.schema.json",
+  "title": "Murphy Model Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "name", "roles"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "orchestrator",
+        "intern",
+        "junior",
+        "senior",
+        "architect",
+        "principal"
+      ],
+      "properties": {
+        "orchestrator": { "$ref": "#/$defs/roleModel" },
+        "intern": { "$ref": "#/$defs/roleModel" },
+        "junior": { "$ref": "#/$defs/roleModel" },
+        "senior": { "$ref": "#/$defs/roleModel" },
+        "architect": { "$ref": "#/$defs/roleModel" },
+        "principal": { "$ref": "#/$defs/roleModel" }
+      }
+    }
+  },
+  "$defs": {
+    "roleModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary"],
+      "properties": {
+        "primary": { "type": "string", "minLength": 1 },
+        "fallback": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

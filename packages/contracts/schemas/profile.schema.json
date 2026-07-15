@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/profile.schema.json",
+  "title": "Murphy Project Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "name",
+    "terminology",
+    "rolePolicy",
+    "qualityGates",
+    "wipLimits"
+  ],
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "terminology": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "trackerFields": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "rolePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principalCheckpointEvery"],
+      "properties": {
+        "principalCheckpointEvery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max"],
+          "properties": {
+            "min": { "type": "integer", "minimum": 1 },
+            "max": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "oneStoryOnePr": { "type": "boolean" },
+        "noSelfApproval": { "type": "boolean" },
+        "noAutomaticMerge": { "type": "boolean" },
+        "maxReviewLoops": { "type": "integer", "minimum": 1 },
+        "maxFixLoops": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "requiredReferences": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "qualityGates": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "templates": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "wipLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "storyLanes",
+        "juniorsPerStory",
+        "interns",
+        "seniors",
+        "architects",
+        "sharedFoundationLanes"
+      ],
+      "properties": {
+        "storyLanes": { "type": "integer", "minimum": 1 },
+        "juniorsPerStory": { "type": "integer", "minimum": 1 },
+        "interns": { "type": "integer", "minimum": 1 },
+        "seniors": { "type": "integer", "minimum": 1 },
+        "architects": { "type": "integer", "minimum": 1 },
+        "sharedFoundationLanes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

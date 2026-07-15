@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "sddTransitions": {
+    "intent": ["spec-draft"],
+    "spec-draft": ["spec-reviewed"],
+    "spec-reviewed": ["spec-approved", "spec-draft"],
+    "spec-approved": ["planned"],
+    "planned": ["implementation-ready"],
+    "implementation-ready": ["implementing"],
+    "implementing": ["verifying"],
+    "verifying": ["release-ready", "implementing"],
+    "release-ready": ["released"],
+    "released": []
+  },
+  "deliveryTransitions": {
+    "candidate": ["architect-ready"],
+    "architect-ready": ["subtask-ready"],
+    "subtask-ready": ["junior-complete"],
+    "junior-complete": ["senior-integrated"],
+    "senior-integrated": ["tests-passed"],
+    "tests-passed": ["architect-approved"],
+    "architect-approved": ["merge-ready"],
+    "merge-ready": []
+  },
+  "batchTransitions": {
+    "batch-open": ["three-or-four-stories-merged"],
+    "three-or-four-stories-merged": ["principal-review"],
+    "principal-review": ["continue", "corrective-work", "human-escalation"],
+    "continue": ["batch-open"],
+    "corrective-work": ["principal-review", "batch-open"],
+    "human-escalation": []
+  },
+  "principalCheckpointEvery": { "min": 3, "max": 4 }
+}

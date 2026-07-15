@@ -1,0 +1,13 @@
+{
+  "name": "murphy-agent-kit",
+  "displayName": "Murphy Agent Kit",
+  "version": "0.1.0",
+  "description": "Specification-Driven Development orchestration for Cursor — controller-authoritative roles, gates, and qualification.",
+  "author": {
+    "name": "jaylamping"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["murphy", "sdd", "orchestration", "cursor"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

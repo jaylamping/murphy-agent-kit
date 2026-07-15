@@ -1,0 +1,101 @@
+{
+  "version": "1.0.0",
+  "roles": {
+    "orchestrator": {
+      "canMutateCode": false,
+      "canMutateTickets": false,
+      "canApproveMerge": false,
+      "canEscalateToHuman": true,
+      "readonly": true,
+      "allowedActions": [
+        "plan",
+        "schedule",
+        "launch-role",
+        "evaluate-gates",
+        "recover",
+        "escalate"
+      ],
+      "forbiddenActions": ["edit-source", "merge-pr", "mutate-jira"]
+    },
+    "intern": {
+      "canMutateCode": false,
+      "canMutateTickets": false,
+      "canApproveMerge": false,
+      "canEscalateToHuman": false,
+      "readonly": true,
+      "allowedActions": [
+        "search",
+        "read",
+        "inventory",
+        "cite",
+        "report-gaps"
+      ],
+      "forbiddenActions": [
+        "edit-source",
+        "run-mutating-shell",
+        "approve",
+        "merge"
+      ]
+    },
+    "junior": {
+      "canMutateCode": true,
+      "canMutateTickets": false,
+      "canApproveMerge": false,
+      "canEscalateToHuman": false,
+      "readonly": false,
+      "allowedActions": [
+        "implement-subtask",
+        "write-tests",
+        "request-discovery",
+        "commit-in-worktree"
+      ],
+      "forbiddenActions": ["merge-pr", "approve-architecture", "mutate-jira"]
+    },
+    "senior": {
+      "canMutateCode": true,
+      "canMutateTickets": false,
+      "canApproveMerge": false,
+      "canEscalateToHuman": false,
+      "readonly": false,
+      "allowedActions": [
+        "integrate-subtasks",
+        "resolve-conflicts",
+        "run-story-tests",
+        "request-discovery",
+        "prepare-pr"
+      ],
+      "forbiddenActions": ["final-architect-approve", "principal-verdict"]
+    },
+    "architect": {
+      "canMutateCode": true,
+      "canMutateTickets": true,
+      "canApproveMerge": true,
+      "canEscalateToHuman": true,
+      "readonly": false,
+      "allowedActions": [
+        "design",
+        "decompose-stories",
+        "approve-story",
+        "request-discovery",
+        "open-pr",
+        "escalate"
+      ],
+      "forbiddenActions": ["principal-verdict"]
+    },
+    "principal": {
+      "canMutateCode": false,
+      "canMutateTickets": false,
+      "canApproveMerge": false,
+      "canEscalateToHuman": true,
+      "readonly": true,
+      "allowedActions": [
+        "checkpoint-review",
+        "verdict-continue",
+        "verdict-correct",
+        "verdict-escalate",
+        "request-discovery"
+      ],
+      "forbiddenActions": ["edit-source", "merge-pr"]
+    }
+  }
+}

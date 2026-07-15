@@ -1,0 +1,49 @@
+version: "1.0.0"
+name: consumer-port-active
+description: >
+  Active implementation profile after discovery/playbook freeze.
+  Qualified hard maxima for parallel lanes.
+terminology:
+  epic: Epic
+  story: Story
+  subtask: Subtask
+trackerFields:
+  inheritanceFromEpic: FAN360-13796
+  requiredMatchFields:
+    - Team
+    - Assignee
+    - Product Feature
+    - Labels
+    - Goals
+rolePolicy:
+  principalCheckpointEvery:
+    min: 3
+    max: 4
+  oneStoryOnePr: true
+  noSelfApproval: true
+  noAutomaticMerge: true
+  maxReviewLoops: 3
+  maxFixLoops: 3
+requiredReferences:
+  - JIRA.md
+  - QUARKUS.md
+  - REGRESSION.md
+qualityGates:
+  - jira-inheritance
+  - discovery-citations
+  - story-tests
+  - architect-approval
+  - principal-checkpoint
+  - regression-parity
+templates:
+  story: templates/story.md
+wipLimits:
+  storyLanes: 4
+  juniorsPerStory: 3
+  interns: 8
+  seniors: 2
+  architects: 2
+  sharedFoundationLanes: 1
+domain:
+  phase: active
+  allowImplementation: true

@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "gates": [
+    {
+      "id": "claims-declared",
+      "name": "Resource claims declared",
+      "when": "before-junior-start",
+      "requiredEvidence": ["resource-claims", "story-brief"],
+      "blocking": true,
+      "description": "Juniors cannot start until exclusive/shared claims are recorded."
+    },
+    {
+      "id": "discovery-citations",
+      "name": "Discovery citations present",
+      "when": "before-junior-start",
+      "requiredEvidence": ["discovery-report"],
+      "blocking": true,
+      "description": "Implementation requires Intern discovery with path/line citations."
+    },
+    {
+      "id": "subtask-tests",
+      "name": "Subtask tests passed",
+      "when": "before-senior-integrate",
+      "requiredEvidence": ["junior-test-log", "implementation-result"],
+      "blocking": true
+    },
+    {
+      "id": "story-integration",
+      "name": "Story integration complete",
+      "when": "before-architect-approve",
+      "requiredEvidence": ["integration-result", "story-test-log"],
+      "blocking": true
+    },
+    {
+      "id": "architect-approval",
+      "name": "Architect approval",
+      "when": "before-merge",
+      "requiredEvidence": ["review-result", "architect-approved"],
+      "blocking": true
+    },
+    {
+      "id": "principal-checkpoint",
+      "name": "Principal checkpoint after 3-4 merges",
+      "when": "before-principal-checkpoint",
+      "requiredEvidence": ["merged-story-batch", "parity-or-regression-notes"],
+      "blocking": true
+    },
+    {
+      "id": "sdd-transition",
+      "name": "SDD transition evidence",
+      "when": "before-sdd-transition",
+      "requiredEvidence": ["sdd-artifact", "gate-checksum"],
+      "blocking": true
+    }
+  ]
+}

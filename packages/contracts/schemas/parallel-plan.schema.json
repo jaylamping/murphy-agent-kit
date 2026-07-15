@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/parallel-plan.schema.json",
+  "title": "Murphy Parallel Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "waveId", "baseSha", "lanes", "createdAt"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "waveId": { "type": "string", "minLength": 1 },
+    "baseSha": { "type": "string", "minLength": 1 },
+    "lanes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["storyId", "branch", "worktree", "claims", "dependsOn"],
+        "properties": {
+          "storyId": { "type": "string" },
+          "branch": { "type": "string" },
+          "worktree": { "type": "string" },
+          "claims": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "subtasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["subtaskId", "branch", "worktree", "allowedPaths"],
+              "properties": {
+                "subtaskId": { "type": "string" },
+                "branch": { "type": "string" },
+                "worktree": { "type": "string" },
+                "allowedPaths": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mergeOrder": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

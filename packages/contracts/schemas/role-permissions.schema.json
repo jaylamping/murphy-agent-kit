@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/role-permissions.schema.json",
+  "title": "Murphy Role Permissions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "roles"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "orchestrator",
+        "intern",
+        "junior",
+        "senior",
+        "architect",
+        "principal"
+      ],
+      "properties": {
+        "orchestrator": { "$ref": "#/$defs/rolePermission" },
+        "intern": { "$ref": "#/$defs/rolePermission" },
+        "junior": { "$ref": "#/$defs/rolePermission" },
+        "senior": { "$ref": "#/$defs/rolePermission" },
+        "architect": { "$ref": "#/$defs/rolePermission" },
+        "principal": { "$ref": "#/$defs/rolePermission" }
+      }
+    }
+  },
+  "$defs": {
+    "rolePermission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canMutateCode",
+        "canMutateTickets",
+        "canApproveMerge",
+        "canEscalateToHuman",
+        "allowedActions"
+      ],
+      "properties": {
+        "canMutateCode": { "type": "boolean" },
+        "canMutateTickets": { "type": "boolean" },
+        "canApproveMerge": { "type": "boolean" },
+        "canEscalateToHuman": { "type": "boolean" },
+        "readonly": { "type": "boolean" },
+        "allowedActions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "forbiddenActions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

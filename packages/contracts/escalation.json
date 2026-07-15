@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "gate-failure-block",
+      "trigger": "gate-failure",
+      "action": "pause-lane",
+      "owner": "orchestrator",
+      "description": "Blocking gate failures pause the lane until evidence is repaired."
+    },
+    {
+      "id": "claim-conflict",
+      "trigger": "claim-conflict",
+      "action": "reroute-to-architect",
+      "owner": "architect",
+      "description": "Overlapping exclusive claims require Architect replan."
+    },
+    {
+      "id": "lease-stale",
+      "trigger": "lease-stale",
+      "action": "pause-lane",
+      "owner": "orchestrator",
+      "description": "Stale leases are reclaimed only after fence check."
+    },
+    {
+      "id": "model-unavailable",
+      "trigger": "model-unavailable",
+      "action": "retry-with-fallback",
+      "owner": "orchestrator",
+      "description": "Pre-execution only; never after work may have started."
+    },
+    {
+      "id": "principal-escalate",
+      "trigger": "principal-escalate",
+      "action": "escalate-to-human",
+      "owner": "human",
+      "description": "Principal escalate verdict stops automated progress."
+    },
+    {
+      "id": "credential-missing",
+      "trigger": "credential-missing",
+      "action": "escalate-to-human",
+      "owner": "human",
+      "description": "Missing credentials are never invented or bypassed."
+    },
+    {
+      "id": "recovery-ambiguous",
+      "trigger": "recovery-ambiguous",
+      "action": "escalate-to-human",
+      "owner": "human",
+      "description": "Ambiguous crash recovery requires human confirmation."
+    },
+    {
+      "id": "human-required",
+      "trigger": "human-required",
+      "action": "escalate-to-human",
+      "owner": "human",
+      "description": "Explicit human-required signals stop the run."
+    }
+  ]
+}

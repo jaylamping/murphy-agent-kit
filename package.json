@@ -1,0 +1,45 @@
+{
+  "name": "murphy-agent-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Murphy Agent Kit — Specification-Driven Development orchestration for Cursor",
+  "type": "module",
+  "packageManager": "pnpm@10.29.2",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "bin": {
+    "murphy": "./packages/controller/dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p packages/controller/tsconfig.json",
+    "test": "node --import tsx --test packages/controller/test/**/*.test.ts qualification/tests/**/*.test.ts",
+    "test:controller": "node --import tsx --test packages/controller/test/**/*.test.ts",
+    "test:qualification": "node --import tsx --test qualification/tests/**/*.test.ts",
+    "qualify": "node --import tsx qualification/tests/run-qualification.ts",
+    "typecheck": "tsc -p packages/controller/tsconfig.json --noEmit",
+    "murphy": "node --import tsx packages/controller/src/cli.ts",
+    "install:local": "node scripts/install-local.mjs"
+  },
+  "dependencies": {
+    "@cursor/sdk": "1.0.23",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "better-sqlite3": "^11.8.1",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
+  }
+}

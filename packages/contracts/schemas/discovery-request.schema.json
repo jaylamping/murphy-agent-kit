@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/discovery-request.schema.json",
+  "title": "Murphy Discovery Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "requestId",
+    "requesterRole",
+    "query",
+    "scope",
+    "repositoryFingerprint"
+  ],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "requesterRole": {
+      "type": "string",
+      "enum": ["junior", "senior", "architect", "principal", "orchestrator"]
+    },
+    "query": { "type": "string", "minLength": 1 },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paths"],
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "keywords": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "symbols": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "repositoryFingerprint": { "type": "string", "minLength": 1 },
+    "maxResults": { "type": "integer", "minimum": 1, "maximum": 100 },
+    "storyId": { "type": "string" },
+    "subtaskId": { "type": "string" }
+  }
+}

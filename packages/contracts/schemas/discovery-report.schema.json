@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/discovery-report.schema.json",
+  "title": "Murphy Discovery Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "requestId",
+    "repositoryFingerprint",
+    "citations",
+    "confidence",
+    "unresolvedGaps",
+    "createdAt"
+  ],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "repositoryFingerprint": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string" },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "startLine", "endLine", "excerpt", "kind"],
+        "properties": {
+          "path": { "type": "string" },
+          "startLine": { "type": "integer", "minimum": 1 },
+          "endLine": { "type": "integer", "minimum": 1 },
+          "excerpt": { "type": "string" },
+          "kind": {
+            "type": "string",
+            "enum": ["direct", "inference"]
+          },
+          "searchTerm": { "type": "string" }
+        }
+      }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "unresolvedGaps": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

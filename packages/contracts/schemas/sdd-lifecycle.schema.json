@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/sdd-lifecycle.schema.json",
+  "title": "Murphy SDD Lifecycle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "state", "specificationId", "updatedAt"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "state": {
+      "type": "string",
+      "enum": [
+        "intent",
+        "spec-draft",
+        "spec-reviewed",
+        "spec-approved",
+        "planned",
+        "implementation-ready",
+        "implementing",
+        "verifying",
+        "release-ready",
+        "released"
+      ]
+    },
+    "specificationId": { "type": "string", "minLength": 1 },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "previousState": { "type": "string" },
+    "transitionReason": { "type": "string" }
+  }
+}

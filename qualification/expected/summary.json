@@ -1,0 +1,7 @@
+{
+  "allCasesPass": true,
+  "agentRepetitions": 3,
+  "deterministicRepetitions": 10,
+  "noRealExternalMutations": true,
+  "coreHasNoFan360Keys": true
+}

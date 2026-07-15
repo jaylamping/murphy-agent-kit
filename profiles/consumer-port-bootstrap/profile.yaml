@@ -1,0 +1,49 @@
+version: "1.0.0"
+name: consumer-port-bootstrap
+description: >
+  Bootstrap profile for fan360-consumer → Quarkus port: repository setup,
+  Jira hierarchy completion, readonly discovery, and playbook creation.
+  No implementation Stories run under this profile.
+terminology:
+  epic: Epic
+  story: Story
+  subtask: Subtask
+trackerFields:
+  inheritanceFromEpic: FAN360-13796
+  requiredMatchFields:
+    - Team
+    - Assignee
+    - Product Feature
+    - Labels
+    - Goals
+  labels:
+    - fan360-consumer-uplift
+rolePolicy:
+  principalCheckpointEvery:
+    min: 3
+    max: 4
+  oneStoryOnePr: true
+  noSelfApproval: true
+  noAutomaticMerge: true
+  maxReviewLoops: 3
+  maxFixLoops: 3
+requiredReferences:
+  - JIRA.md
+  - QUARKUS.md
+  - REGRESSION.md
+qualityGates:
+  - jira-inheritance
+  - discovery-citations
+  - no-implementation-dispatch
+templates:
+  story: templates/story.md
+wipLimits:
+  storyLanes: 1
+  juniorsPerStory: 1
+  interns: 8
+  seniors: 1
+  architects: 2
+  sharedFoundationLanes: 1
+domain:
+  phase: bootstrap
+  allowImplementation: false

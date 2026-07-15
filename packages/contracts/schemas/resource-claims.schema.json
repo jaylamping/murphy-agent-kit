@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/resource-claims.schema.json",
+  "title": "Murphy Resource Claims",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "storyId", "claims"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "storyId": { "type": "string", "minLength": 1 },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "kind", "mode"],
+        "properties": {
+          "resourceId": { "type": "string", "minLength": 1 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "file-glob",
+              "package",
+              "manifest",
+              "shared-config",
+              "database-object",
+              "messaging-contract",
+              "api-contract",
+              "fixture",
+              "deployment",
+              "documentation",
+              "environment"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["exclusive-write", "shared-read"]
+          },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

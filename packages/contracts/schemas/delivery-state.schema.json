@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://murphy-agent-kit.local/schemas/delivery-state.schema.json",
+  "title": "Murphy Delivery State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "storyId", "state", "updatedAt"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "storyId": { "type": "string", "minLength": 1 },
+    "state": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "architect-ready",
+        "subtask-ready",
+        "junior-complete",
+        "senior-integrated",
+        "tests-passed",
+        "architect-approved",
+        "merge-ready"
+      ]
+    },
+    "batchState": {
+      "type": "string",
+      "enum": [
+        "batch-open",
+        "three-or-four-stories-merged",
+        "principal-review",
+        "continue",
+        "corrective-work",
+        "human-escalation"
+      ]
+    },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "previousState": { "type": "string" },
+    "transitionReason": { "type": "string" },
+    "evidenceChecksum": { "type": "string" }
+  }
+}
