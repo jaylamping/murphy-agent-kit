@@ -1,5 +1,32 @@
 # Release
 
+## v0.2.1 — Jira status hygiene
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.2.1` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.4` |
+| State schema version | `2` |
+| Git tag | `v0.2.1` |
+| Git SHA | _(recorded after tag)_ |
+| Qualification | Unchanged suite from v0.2.0; see `docs/QUALIFICATION-REPORT.md` |
+
+### Changes since v0.2.0
+
+- Consumer-port `JIRA.md`: status hygiene — transition Stories with PR open (**In Review**) and after merge (**Ready for QA**); document Team / Product Feature field ids for transitions
+- Profiles `1.1.4`
+
+### Install this release
+
+```bash
+git checkout v0.2.1
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.2.1
+```
+
 ## v0.2.0 — sheepdog crew rename
 
 | Field | Value |

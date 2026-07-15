@@ -3,7 +3,7 @@
 - Run ID: `7d9878915a31`
 - OK: **true**
 - Passed: 47 / 47
-- Plugin version: 0.2.0
+- Plugin version: 0.2.1 (suite unchanged from 0.2.0)
 - Timestamp: 2026-07-15T02:33:14.208Z
 
 ## Results
