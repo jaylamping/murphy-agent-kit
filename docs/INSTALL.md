@@ -2,7 +2,7 @@
 
 ## Local development
 
-1. Clone `jaylamping/murphy-agent-kit` (private).
+1. Clone `jaylamping/murphy-agent-kit`.
 2. `pnpm install && pnpm build`
 3. `pnpm run install:local` — symlinks into `~/.cursor/plugins/local/murphy-agent-kit`
 4. Reload Cursor

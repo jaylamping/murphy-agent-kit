@@ -18,6 +18,6 @@ Suspected secrets, tokens, customer payloads, and sensitive paths are redacted b
 - No role is trusted with secrets or production credentials.
 - Hooks are defense in depth; the controller is the security and workflow boundary.
 
-## Repository privacy
+## Repository visibility
 
-This repository must remain **private**. Setup stops if GitHub visibility is not private.
+This repository is **public**. Do not commit credentials, customer data, or environment-specific secrets.

@@ -1,6 +1,6 @@
 # Murphy Agent Kit
 
-Private Specification-Driven Development (SDD) orchestration kit for Cursor.
+Specification-Driven Development (SDD) orchestration kit for Cursor.
 
 The TypeScript controller is the workflow authority. The `/murphy` skill is the user interface. Roles (Intern, Junior, Senior, Architect, Principal) are launched as top-level `@cursor/sdk` agents with explicit models and isolated worktrees.
 
@@ -51,4 +51,4 @@ Durable SQLite state lives at `~/.murphy-agent-kit/state/murphy-agent-kit.db` (W
 
 ## License
 
-UNLICENSED — private personal repository.
+UNLICENSED — personal repository.
