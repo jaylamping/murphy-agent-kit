@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
  * Install murphy-agent-kit into ~/.cursor/plugins/local/murphy-agent-kit
- * via symlink for local development.
+ * (symlink on POSIX; directory junction on Windows).
  */
-import { mkdirSync, rmSync, symlinkSync, existsSync, readFileSync, chmodSync } from "node:fs";
+import { mkdirSync, rmSync, symlinkSync, existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -19,7 +19,30 @@ if (existsSync(target)) {
   rmSync(target, { recursive: true, force: true });
 }
 
-symlinkSync(repoRoot, target, "dir");
+const isWindows = process.platform === "win32";
+/** Junctions do not require elevated privileges on Windows; symlinks often do. */
+const linkType = isWindows ? "junction" : "dir";
+const method = isWindows ? "junction-local" : "symlink-local";
+
+try {
+  symlinkSync(repoRoot, target, linkType);
+} catch (err) {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(
+    JSON.stringify(
+      {
+        ok: false,
+        error: message,
+        hint: isWindows
+          ? "Enable Windows Developer Mode, or run from an elevated shell, then retry."
+          : "Ensure the install path is writable, then retry.",
+      },
+      null,
+      2,
+    ),
+  );
+  process.exit(1);
+}
 
 const pluginJson = JSON.parse(
   readFileSync(join(repoRoot, ".cursor-plugin", "plugin.json"), "utf8"),
@@ -33,7 +56,8 @@ console.log(
       version: pluginJson.version,
       installPath: target,
       source: repoRoot,
-      method: "symlink-local",
+      method,
+      platform: process.platform,
     },
     null,
     2,

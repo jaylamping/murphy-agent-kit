@@ -4,7 +4,7 @@
 
 1. Clone `jaylamping/murphy-agent-kit`.
 2. `pnpm install && pnpm build`
-3. `pnpm run install:local` — symlinks into `~/.cursor/plugins/local/murphy-agent-kit`
+3. `pnpm run install:local` — links into `~/.cursor/plugins/local/murphy-agent-kit` (symlink on macOS/Linux, directory junction on Windows)
 4. Reload Cursor
 5. Invoke `/murphy` or `pnpm murphy self-test`
 
@@ -42,4 +42,12 @@ Credentials must come from environment or keychain injection — never YAML, SQL
 | pnpm | 10.x |
 | Git | worktree-capable |
 | @cursor/sdk | 1.0.23 |
-| OS | macOS |
+| OS | macOS, Windows (Linux untested) |
+
+## Windows notes
+
+- Same Node/pnpm/Git/`@cursor/sdk` stack; state lives under `%USERPROFILE%\.murphy-agent-kit\`.
+- `pnpm run install:local` uses a directory **junction** (no admin required in most setups).
+- If install still fails, turn on Windows Developer Mode and retry.
+- Owner-only `chmod` is skipped on NTFS; keep the Windows account locked down instead.
+- Qualification evidence so far was collected on macOS — run `pnpm murphy self-test` and `pnpm qualify` once on the Windows box before relying on it for migration work.

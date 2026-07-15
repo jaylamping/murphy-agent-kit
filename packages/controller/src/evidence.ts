@@ -1,9 +1,10 @@
-import { mkdirSync, writeFileSync, chmodSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
 import type { StateStore } from "./state-store.js";
 import { nowIso, sha256 } from "./types.js";
 import { redactSecrets } from "./credentials.js";
+import { tryOwnerOnly, tryOwnerOnlyFile } from "./fs-permissions.js";
 
 export interface EvidenceRecord {
   id: string;
@@ -19,7 +20,7 @@ export class EvidenceStore {
     private readonly evidenceDir: string,
   ) {
     mkdirSync(evidenceDir, { recursive: true, mode: 0o700 });
-    chmodSync(evidenceDir, 0o700);
+    tryOwnerOnly(evidenceDir);
   }
 
   put(
@@ -37,6 +38,7 @@ export class EvidenceStore {
       .slice(0, 16);
     const path = join(this.evidenceDir, `${id}-${kind}.json`);
     writeFileSync(path, safe, { mode: 0o600 });
+    tryOwnerOnlyFile(path);
     this.store.db
       .prepare(
         `INSERT OR REPLACE INTO evidence (id, run_id, kind, checksum, path, payload_json, created_at)

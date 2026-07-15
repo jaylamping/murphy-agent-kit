@@ -6,7 +6,7 @@ The TypeScript controller is the workflow authority. The `/murphy` skill is the 
 
 ## Requirements
 
-- macOS
+- macOS or Windows (Linux should work; not yet qualification-tested)
 - Node.js >= 22 (tested on 24 LTS)
 - pnpm 10
 - Git with worktree support
@@ -21,7 +21,9 @@ pnpm build
 pnpm run install:local
 ```
 
-This symlinks the repo into `~/.cursor/plugins/local/murphy-agent-kit`. Reload Cursor after install.
+This links the repo into `~/.cursor/plugins/local/murphy-agent-kit` (symlink on macOS/Linux, directory junction on Windows). Reload Cursor after install.
+
+On Windows, if linking fails, enable **Developer Mode** (Settings → System → For developers) and retry.
 
 Verify:
 
@@ -47,7 +49,7 @@ Consumer-specific values live only in profiles, never in core contracts.
 
 ## State
 
-Durable SQLite state lives at `~/.murphy-agent-kit/state/murphy-agent-kit.db` (WAL mode, owner-only permissions). Credentials are never stored there.
+Durable SQLite state lives at `~/.murphy-agent-kit/state/murphy-agent-kit.db` (WAL mode; owner-only permissions on POSIX). Credentials are never stored there.
 
 ## License
 

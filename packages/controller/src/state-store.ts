@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
-import { chmodSync, mkdirSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { tryOwnerOnly } from "./fs-permissions.js";
 import {
   defaultDbPath,
   defaultStateDir,
@@ -28,12 +29,8 @@ export class StateStore {
   constructor(dbPath = defaultDbPath()) {
     this.dbPath = dbPath;
     mkdirSync(dirname(dbPath), { recursive: true, mode: 0o700 });
-    chmodSync(dirname(dbPath), 0o700);
-    try {
-      chmodSync(defaultStateDir(), 0o700);
-    } catch {
-      /* may not own parent */
-    }
+    tryOwnerOnly(dirname(dbPath));
+    tryOwnerOnly(defaultStateDir());
     this.db = new Database(dbPath);
     this.db.pragma("journal_mode = WAL");
     this.db.pragma("foreign_keys = ON");

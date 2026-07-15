@@ -1,4 +1,5 @@
 export * from "./types.js";
+export * from "./fs-permissions.js";
 export * from "./state-store.js";
 export * from "./leases.js";
 export * from "./recovery.js";
