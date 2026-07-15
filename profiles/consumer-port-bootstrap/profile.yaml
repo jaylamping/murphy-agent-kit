@@ -4,7 +4,7 @@ description: >
   Bootstrap profile for fan360-consumer → Quarkus port: repository setup,
   Jira hierarchy completion, readonly discovery, and playbook creation.
   Fan360 peer house style; applies Murphy non-production-first (QA locally).
-  Principal glance advisory after ≥3 merges (does not pause flow).
+  Shepherd glance advisory after ≥3 merges (does not pause flow).
   No implementation Stories run under this profile.
 terminology:
   epic: Epic
@@ -23,10 +23,10 @@ trackerFields:
   labels:
     - fan360-consumer-uplift
 rolePolicy:
-  principalCheckpointEvery:
+  shepherdCheckpointEvery:
     min: 3
     max: 3
-  principalCheckpointBlocking: false
+  shepherdCheckpointBlocking: false
   oneStoryOnePr: true
   noSelfApproval: true
   noAutomaticMerge: true
@@ -44,10 +44,10 @@ templates:
   story: templates/story.md
 wipLimits:
   storyLanes: 1
-  juniorsPerStory: 1
-  interns: 8
-  seniors: 1
-  architects: 2
+  pupsPerStory: 1
+  noses: 8
+  leads: 1
+  judges: 2
   sharedFoundationLanes: 1
 domain:
   phase: bootstrap

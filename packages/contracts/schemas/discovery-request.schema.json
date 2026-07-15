@@ -17,7 +17,7 @@
     "requestId": { "type": "string", "minLength": 1 },
     "requesterRole": {
       "type": "string",
-      "enum": ["junior", "senior", "architect", "principal", "orchestrator"]
+      "enum": ["pup", "lead", "judge", "shepherd", "orchestrator"]
     },
     "query": { "type": "string", "minLength": 1 },
     "scope": {

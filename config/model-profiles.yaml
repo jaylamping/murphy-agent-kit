@@ -6,22 +6,22 @@ profiles:
       model: cursor-grok-4.5-high-fast
       allowedFallbacks:
         - gpt-5.6-luna-xhigh
-    intern:
+    nose:
       model: composer-2.5
       allowedFallbacks: []
-    junior:
+    pup:
       model: gpt-5.6-luna-xhigh
       allowedFallbacks:
         - cursor-grok-4.5-low
-    senior:
+    lead:
       model: cursor-grok-4.5-high-fast
       allowedFallbacks:
         - gpt-5.6-luna-xhigh
-    architect:
+    judge:
       model: gpt-5.6-terra-medium
       allowedFallbacks:
         - cursor-grok-4.5-low
-    principal:
+    shepherd:
       model: gpt-5.6-sol-xhigh
       allowedFallbacks:
         - cursor-grok-4.5-low

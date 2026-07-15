@@ -34,9 +34,9 @@ export function loadLifecycle(repoRoot: string) {
     sddTransitions: Record<string, string[]>;
     deliveryTransitions: Record<string, string[]>;
     batchTransitions: Record<string, string[]>;
-    principalCheckpointEvery: { min: number; max: number };
-    /** When false (default), Principal after N merges is recommended but does not pause the batch. */
-    principalCheckpointBlocking?: boolean;
+    shepherdCheckpointEvery: { min: number; max: number };
+    /** When false (default), Shepherd after N merges is recommended but does not pause the batch. */
+    shepherdCheckpointBlocking?: boolean;
   };
 }
 

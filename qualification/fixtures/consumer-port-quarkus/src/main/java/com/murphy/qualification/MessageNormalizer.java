@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class MessageNormalizer {
   /**
    * Qualification fixture: normalizes inbound consumer messages.
-   * Seeded defect in v1: trims but does not lower-case (Senior/Architect cases).
+   * Seeded defect in v1: trims but does not lower-case (Lead/Judge cases).
    */
   public String normalize(String input) {
     if (input == null) {

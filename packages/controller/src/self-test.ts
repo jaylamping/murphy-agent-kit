@@ -95,7 +95,7 @@ export function runSelfTests(repoRoot: string): SelfTestResult[] {
 
   results.push({
     name: "role-prompts",
-    ok: ["intern", "junior", "senior", "architect", "principal"].every((r) =>
+    ok: ["nose", "pup", "lead", "judge", "shepherd"].every((r) =>
       existsSync(join(repoRoot, "roles", `${r}.md`)),
     ),
   });

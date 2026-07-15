@@ -18,8 +18,8 @@ public class MessageNormalizerTest {
 
   @Test
   void seededLowercaseExpectation() {
-    // Intentionally fails against current implementation (seeded Senior fix case).
-    // Qualification harness expects Senior to fix normalize to lower-case.
+    // Intentionally fails against current implementation (seeded Lead fix case).
+    // Qualification harness expects Lead to fix normalize to lower-case.
     Assertions.assertEquals("abc", normalizer.normalize("ABC"));
   }
 }

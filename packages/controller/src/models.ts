@@ -25,11 +25,11 @@ interface RawProfiles {
       version: string;
       fallbackPolicy: string;
       orchestrator: { model: string; allowedFallbacks: string[] };
-      intern: { model: string; allowedFallbacks: string[] };
-      junior: { model: string; allowedFallbacks: string[] };
-      senior: { model: string; allowedFallbacks: string[] };
-      architect: { model: string; allowedFallbacks: string[] };
-      principal: { model: string; allowedFallbacks: string[] };
+      nose: { model: string; allowedFallbacks: string[] };
+      pup: { model: string; allowedFallbacks: string[] };
+      lead: { model: string; allowedFallbacks: string[] };
+      judge: { model: string; allowedFallbacks: string[] };
+      shepherd: { model: string; allowedFallbacks: string[] };
     }
   >;
 }
@@ -57,11 +57,11 @@ export function loadModelProfile(
   }
   const roles: ModelProfile["roles"] = {
     orchestrator: profile.orchestrator,
-    intern: profile.intern,
-    junior: profile.junior,
-    senior: profile.senior,
-    architect: profile.architect,
-    principal: profile.principal,
+    nose: profile.nose,
+    pup: profile.pup,
+    lead: profile.lead,
+    judge: profile.judge,
+    shepherd: profile.shepherd,
   };
   const digest = sha256(JSON.stringify({ name, ...profile }));
   return {

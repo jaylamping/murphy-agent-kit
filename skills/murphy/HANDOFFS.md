@@ -6,14 +6,14 @@ All handoffs must validate against `packages/contracts/schemas/handoff.schema.js
 
 | Kind | From → To | Purpose |
 |------|-----------|---------|
-| `discovery-request` | junior/senior/architect/principal → orchestrator | Pause and dispatch Intern |
-| `discovery-report` | intern → requester | Cited evidence + gaps |
-| `story-brief` | architect → junior/senior | Story scope and claims |
-| `subtask-brief` | architect/senior → junior | Mechanical subtask + allowed paths |
-| `implementation-result` | junior → senior | Commits, tests, risks |
-| `integration-result` | senior → architect | Integrated Story evidence |
-| `review-result` | architect → orchestrator | Findings; approval iff zero blocking |
-| `principal-verdict` | principal → orchestrator | `continue` \| `correct` \| `escalate` |
+| `discovery-request` | pup/lead/judge/shepherd → orchestrator | Pause and dispatch Nose |
+| `discovery-report` | nose → requester | Cited evidence + gaps |
+| `story-brief` | judge → pup/lead | Story scope and claims |
+| `subtask-brief` | judge/lead → pup | Mechanical subtask + allowed paths |
+| `implementation-result` | pup → lead | Commits, tests, risks |
+| `integration-result` | lead → judge | Integrated Story evidence |
+| `review-result` | judge → orchestrator | Findings; approval iff zero blocking |
+| `shepherd-verdict` | shepherd → orchestrator | `continue` \| `correct` \| `escalate` |
 | `escalation` | any → human | Focused human question |
 | `gate-failure` | controller → orchestrator | Blocking gate evidence missing |
 
@@ -22,4 +22,4 @@ All handoffs must validate against `packages/contracts/schemas/handoff.schema.js
 - No schema-invalid handoff advances state
 - No role approves its own work
 - Discovery reports distinguish `direct` vs `inference` citations
-- Principal escalate must cite an allowed human-escalation condition
+- Shepherd escalate must cite an allowed human-escalation condition

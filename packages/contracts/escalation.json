@@ -11,9 +11,9 @@
     {
       "id": "claim-conflict",
       "trigger": "claim-conflict",
-      "action": "reroute-to-architect",
-      "owner": "architect",
-      "description": "Overlapping exclusive claims require Architect replan."
+      "action": "reroute-to-judge",
+      "owner": "judge",
+      "description": "Overlapping claims: Judge replan before the flock crosses paths."
     },
     {
       "id": "lease-stale",
@@ -30,11 +30,11 @@
       "description": "Pre-execution only; never after work may have started."
     },
     {
-      "id": "principal-escalate",
-      "trigger": "principal-escalate",
+      "id": "shepherd-escalate",
+      "trigger": "shepherd-escalate",
       "action": "escalate-to-human",
       "owner": "human",
-      "description": "Principal escalate verdict stops automated progress."
+      "description": "Shepherd called the farmer; automated progress stops."
     },
     {
       "id": "credential-missing",

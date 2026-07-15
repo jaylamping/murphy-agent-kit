@@ -12,11 +12,11 @@ import {
 } from "./gates.js";
 import {
   ParallelScheduler,
-  principalDue,
+  shepherdDue,
   type StoryLane,
   type WipLimits,
 } from "./scheduler.js";
-import { nowIso, sha256, PLUGIN_VERSION, type DeliveryState, type PrincipalVerdict, type Role } from "./types.js";
+import { nowIso, sha256, PLUGIN_VERSION, type DeliveryState, type ShepherdVerdict, type Role } from "./types.js";
 import { redactSecrets, roleIsReadonly } from "./credentials.js";
 
 export interface LaunchRequest {
@@ -108,8 +108,8 @@ export class Orchestrator {
   }
 
   routeTask(taskDescription: string): Role {
-    if (classifyDiscoveryTask(taskDescription)) return "intern";
-    return "junior";
+    if (classifyDiscoveryTask(taskDescription)) return "nose";
+    return "pup";
   }
 
   async launchRole(req: LaunchRequest): Promise<LaunchResult> {
@@ -340,14 +340,14 @@ export class Orchestrator {
     }
 
     const when =
-      to === "junior-complete"
-        ? "before-senior-integrate"
-        : to === "architect-approved"
+      to === "pup-complete"
+        ? "before-lead-integrate"
+        : to === "judge-approved"
           ? "before-merge"
           : to === "subtask-ready"
-            ? "before-junior-start"
-            : to === "senior-integrated"
-              ? "before-architect-approve"
+            ? "before-pup-start"
+            : to === "lead-integrated"
+              ? "before-judge-approve"
               : null;
 
     if (when) {
@@ -374,16 +374,16 @@ export class Orchestrator {
 
   recordMerge(storyId: string): {
     mergedCount: number;
-    principalRequired: boolean;
-    principalRecommended: boolean;
+    shepherdRequired: boolean;
+    shepherdRecommended: boolean;
   } {
     const count = this.deps.store.recordMergedStory(storyId, this.currentBatchId);
     this.mergedSinceCheckpoint = count;
-    const { min, max } = this.lifecycle.principalCheckpointEvery;
-    const due = principalDue(count, min, max);
-    const blocking = this.lifecycle.principalCheckpointBlocking === true;
+    const { min, max } = this.lifecycle.shepherdCheckpointEvery;
+    const due = shepherdDue(count, min, max);
+    const blocking = this.lifecycle.shepherdCheckpointBlocking === true;
     if (due) {
-      this.deps.evidence.put(storyId, "principal-checkpoint-due", {
+      this.deps.evidence.put(storyId, "shepherd-checkpoint-due", {
         mergedCount: count,
         min,
         max,
@@ -391,21 +391,21 @@ export class Orchestrator {
       });
     }
     // Advisory by default: do not pause the batch. Blocking only when explicitly enabled
-    // or when a later Principal escalate / other critical gate stops the run.
+    // or when a later Shepherd escalate / other critical gate stops the run.
     if (due && blocking) {
       this.deps.store.setBatchState(storyId, "three-or-four-stories-merged");
-      this.deps.store.setBatchState(storyId, "principal-review");
+      this.deps.store.setBatchState(storyId, "shepherd-review");
     }
     return {
       mergedCount: count,
-      principalRequired: due && blocking,
-      principalRecommended: due,
+      shepherdRequired: due && blocking,
+      shepherdRecommended: due,
     };
   }
 
-  applyPrincipalVerdict(
+  applyShepherdVerdict(
     storyId: string,
-    verdict: PrincipalVerdict,
+    verdict: ShepherdVerdict,
     rationale: string,
   ): { ok: boolean; reason?: string } {
     if (verdict === "continue") {
@@ -413,7 +413,7 @@ export class Orchestrator {
       this.deps.store.setBatchState(storyId, "batch-open");
       this.currentBatchId = randomUUID();
       this.mergedSinceCheckpoint = 0;
-      this.deps.evidence.put(storyId, "principal-verdict", {
+      this.deps.evidence.put(storyId, "shepherd-verdict", {
         verdict,
         rationale,
       });

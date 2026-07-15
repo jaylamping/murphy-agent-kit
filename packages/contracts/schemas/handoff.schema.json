@@ -20,11 +20,11 @@
       "type": "string",
       "enum": [
         "orchestrator",
-        "intern",
-        "junior",
-        "senior",
-        "architect",
-        "principal",
+        "nose",
+        "pup",
+        "lead",
+        "judge",
+        "shepherd",
         "human"
       ]
     },
@@ -32,11 +32,11 @@
       "type": "string",
       "enum": [
         "orchestrator",
-        "intern",
-        "junior",
-        "senior",
-        "architect",
-        "principal",
+        "nose",
+        "pup",
+        "lead",
+        "judge",
+        "shepherd",
         "human"
       ]
     },
@@ -50,7 +50,7 @@
         "implementation-result",
         "integration-result",
         "review-result",
-        "principal-verdict",
+        "shepherd-verdict",
         "escalation",
         "gate-failure"
       ]

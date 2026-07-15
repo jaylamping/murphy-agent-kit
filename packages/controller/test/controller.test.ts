@@ -12,7 +12,7 @@ import { EvidenceStore } from "../src/evidence.js";
 import { loadModelProfile, selectModel, validateAgainstAllowlist } from "../src/models.js";
 import {
   ParallelScheduler,
-  principalDue,
+  shepherdDue,
   type StoryLane,
 } from "../src/scheduler.js";
 import {
@@ -44,13 +44,13 @@ describe("state-store CAS", () => {
     const b = store.casDelivery(
       "S1",
       "candidate",
-      "architect-ready",
+      "judge-ready",
       life.deliveryTransitions,
     );
     assert.equal(b.ok, true);
     const bad = store.casDelivery(
       "S1",
-      "architect-ready",
+      "judge-ready",
       "merge-ready",
       life.deliveryTransitions,
     );
@@ -100,21 +100,21 @@ describe("models", () => {
       ["gpt-5.6-terra-medium", true],
       ["gpt-5.6-sol-xhigh", true],
     ]);
-    const primary = selectModel(profile, "senior", avail);
+    const primary = selectModel(profile, "lead", avail);
     assert.ok(!("error" in primary));
     if (!("error" in primary)) {
       assert.equal(primary.selectedModel, "cursor-grok-4.5-high-fast");
     }
-    const fb = selectModel(profile, "senior", avail, {
+    const fb = selectModel(profile, "lead", avail, {
       kind: "pre-execution-capacity",
       message: "quota",
     });
     assert.ok(!("error" in fb));
     if (!("error" in fb)) {
       assert.equal(fb.selectedModel, "gpt-5.6-luna-xhigh");
-      assert.ok(validateAgainstAllowlist(profile, "senior", fb.selectedModel));
+      assert.ok(validateAgainstAllowlist(profile, "lead", fb.selectedModel));
     }
-    const internFb = selectModel(profile, "intern", avail, {
+    const internFb = selectModel(profile, "nose", avail, {
       kind: "pre-execution-capacity",
       message: "quota",
     });
@@ -126,10 +126,10 @@ describe("scheduler", () => {
   it("fills lanes up to cap and serializes exclusive claims", () => {
     const sched = new ParallelScheduler({
       storyLanes: 4,
-      juniorsPerStory: 3,
-      interns: 8,
-      seniors: 2,
-      architects: 2,
+      pupsPerStory: 3,
+      noses: 8,
+      leads: 2,
+      judges: 2,
       sharedFoundationLanes: 1,
     });
     const stories: StoryLane[] = [
@@ -174,9 +174,9 @@ describe("scheduler", () => {
     const plan = sched.plan(stories, {
       storyIds: new Set(),
       subtaskIds: new Set(),
-      internCount: 0,
-      seniorCount: 0,
-      architectCount: 0,
+      noseCount: 0,
+      leadCount: 0,
+      judgeCount: 0,
     });
     assert.ok(plan.readyStories.includes("A"));
     assert.ok(plan.readyStories.includes("C"));
@@ -188,15 +188,15 @@ describe("scheduler", () => {
     );
   });
 
-  it("principalDue at ≥3", () => {
-    assert.equal(principalDue(2), false);
-    assert.equal(principalDue(3), true);
-    assert.equal(principalDue(8), true);
+  it("shepherdDue at ≥3", () => {
+    assert.equal(shepherdDue(2), false);
+    assert.equal(shepherdDue(3), true);
+    assert.equal(shepherdDue(8), true);
   });
 });
 
 describe("gates and routing", () => {
-  it("routes discovery to intern", () => {
+  it("routes discovery to nose", () => {
     assert.equal(classifyDiscoveryTask("find the Kafka consumer"), true);
     assert.equal(classifyDiscoveryTask("implement the handler"), false);
   });
@@ -240,10 +240,10 @@ describe("orchestrator", () => {
       gates: loadGates(REPO_ROOT),
       wip: {
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       },
       repoRoot: REPO_ROOT,
@@ -254,9 +254,9 @@ describe("orchestrator", () => {
       repositoryFingerprint: "fp",
     });
     assert.equal(orch.acceptAdvisorProposal({ waiveGate: true }).accepted, false);
-    assert.equal(orch.routeTask("search for MessageNormalizer"), "intern");
+    assert.equal(orch.routeTask("search for MessageNormalizer"), "nose");
     const launch = await orch.launchRole({
-      role: "intern",
+      role: "nose",
       prompt: "inventory SharedConfig",
       cwd: REPO_ROOT,
     });
@@ -267,7 +267,7 @@ describe("orchestrator", () => {
     assert.ok(launch.sdkRunId);
 
     const capacityLauncher = createMockLauncher({
-      "senior:cursor-grok-4.5-high-fast": {
+      "lead:cursor-grok-4.5-high-fast": {
         status: "startup-failure",
         error: "capacity",
         capacityFailure: true,
@@ -282,10 +282,10 @@ describe("orchestrator", () => {
       gates: loadGates(REPO_ROOT),
       wip: {
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       },
       repoRoot: REPO_ROOT,
@@ -296,7 +296,7 @@ describe("orchestrator", () => {
       repositoryFingerprint: "fp",
     });
     const fbLaunch = await orch2.launchRole({
-      role: "senior",
+      role: "lead",
       prompt: "integrate",
       cwd: REPO_ROOT,
     });
@@ -308,7 +308,7 @@ describe("orchestrator", () => {
     rmSync(dir, { recursive: true, force: true });
   });
 
-  it("blocks delivery without gate evidence and invokes principal", () => {
+  it("blocks delivery without gate evidence and invokes shepherd", () => {
     const { store, dir } = tempStore();
     const leases = new LeaseManager(store);
     const evidence = new EvidenceStore(store, join(dir, "evidence"));
@@ -322,10 +322,10 @@ describe("orchestrator", () => {
       gates: loadGates(REPO_ROOT),
       wip: {
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       },
       repoRoot: REPO_ROOT,
@@ -339,12 +339,12 @@ describe("orchestrator", () => {
     store.casDelivery(
       "S1",
       "candidate",
-      "architect-ready",
+      "judge-ready",
       loadLifecycle(REPO_ROOT).deliveryTransitions,
     );
     const blocked = orch.transitionDelivery(
       "S1",
-      "architect-ready",
+      "judge-ready",
       "subtask-ready",
       "run-missing",
       [],
@@ -353,7 +353,7 @@ describe("orchestrator", () => {
 
     const ok = orch.transitionDelivery(
       "S1",
-      "architect-ready",
+      "judge-ready",
       "subtask-ready",
       "run-ok",
       ["resource-claims", "story-brief", "discovery-report"],
@@ -363,9 +363,9 @@ describe("orchestrator", () => {
     orch.recordMerge("S1");
     orch.recordMerge("S2");
     const third = orch.recordMerge("S3");
-    assert.equal(third.principalRecommended, true);
-    assert.equal(third.principalRequired, false); // advisory — flow does not pause
-    orch.applyPrincipalVerdict("S3", "continue", "healthy");
+    assert.equal(third.shepherdRecommended, true);
+    assert.equal(third.shepherdRequired, false); // advisory — flow does not pause
+    orch.applyShepherdVerdict("S3", "continue", "healthy");
 
     store.close();
     rmSync(dir, { recursive: true, force: true });
@@ -390,7 +390,7 @@ describe("recovery", () => {
     store.upsertRun({
       runId: "r1",
       attemptId: "a1",
-      role: "junior",
+      role: "pup",
       repositoryFingerprint: "fp",
       specificationDigest: "s",
       profileDigest: "p",

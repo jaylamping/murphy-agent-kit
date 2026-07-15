@@ -3,7 +3,7 @@ name: consumer-port-active
 description: >
   Active implementation profile after discovery/playbook freeze.
   Fan360 peer Quarkus house style; Murphy non-production-first (QA locally);
-  Principal glance advisory after ≥3 merged Stories (does not pause flow);
+  Shepherd glance advisory after ≥3 merged Stories (does not pause flow);
   hard stops only for crucial gates; qualified hard maxima for parallel lanes.
 terminology:
   epic: Epic
@@ -22,10 +22,10 @@ trackerFields:
   labels:
     - fan360-consumer-uplift
 rolePolicy:
-  principalCheckpointEvery:
+  shepherdCheckpointEvery:
     min: 3
     max: 3
-  principalCheckpointBlocking: false
+  shepherdCheckpointBlocking: false
   oneStoryOnePr: true
   noSelfApproval: true
   noAutomaticMerge: true
@@ -39,17 +39,17 @@ qualityGates:
   - jira-inheritance
   - discovery-citations
   - story-tests
-  - architect-approval
-  - principal-checkpoint
+  - judge-approval
+  - shepherd-checkpoint
   - regression-parity
 templates:
   story: templates/story.md
 wipLimits:
   storyLanes: 4
-  juniorsPerStory: 3
-  interns: 8
-  seniors: 2
-  architects: 2
+  pupsPerStory: 3
+  noses: 8
+  leads: 2
+  judges: 2
   sharedFoundationLanes: 1
 domain:
   phase: active

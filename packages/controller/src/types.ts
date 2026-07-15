@@ -14,15 +14,15 @@ export const PLUGIN_VERSION = (
   JSON.parse(readFileSync(packageJsonPath, "utf8")) as { version: string }
 ).version;
 
-export const STATE_SCHEMA_VERSION = 1;
+export const STATE_SCHEMA_VERSION = 2;
 
 export type Role =
   | "orchestrator"
-  | "intern"
-  | "junior"
-  | "senior"
-  | "architect"
-  | "principal"
+  | "nose"
+  | "pup"
+  | "lead"
+  | "judge"
+  | "shepherd"
   | "human";
 
 export type SddState =
@@ -39,23 +39,23 @@ export type SddState =
 
 export type DeliveryState =
   | "candidate"
-  | "architect-ready"
+  | "judge-ready"
   | "subtask-ready"
-  | "junior-complete"
-  | "senior-integrated"
+  | "pup-complete"
+  | "lead-integrated"
   | "tests-passed"
-  | "architect-approved"
+  | "judge-approved"
   | "merge-ready";
 
 export type BatchState =
   | "batch-open"
   | "three-or-four-stories-merged"
-  | "principal-review"
+  | "shepherd-review"
   | "continue"
   | "corrective-work"
   | "human-escalation";
 
-export type PrincipalVerdict = "continue" | "correct" | "escalate";
+export type ShepherdVerdict = "continue" | "correct" | "escalate";
 
 export type EventType =
   | "dispatch-intent"

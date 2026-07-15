@@ -4,44 +4,44 @@
     {
       "id": "claims-declared",
       "name": "Resource claims declared",
-      "when": "before-junior-start",
+      "when": "before-pup-start",
       "requiredEvidence": ["resource-claims", "story-brief"],
       "blocking": true,
-      "description": "Juniors cannot start until exclusive/shared claims are recorded."
+      "description": "Pups cannot start until exclusive/shared claims are recorded."
     },
     {
       "id": "discovery-citations",
       "name": "Discovery citations present",
-      "when": "before-junior-start",
+      "when": "before-pup-start",
       "requiredEvidence": ["discovery-report"],
       "blocking": true,
-      "description": "Implementation requires Intern discovery with path/line citations."
+      "description": "Implementation requires Nose discovery with path/line citations."
     },
     {
       "id": "subtask-tests",
       "name": "Subtask tests passed",
-      "when": "before-senior-integrate",
-      "requiredEvidence": ["junior-test-log", "implementation-result"],
+      "when": "before-lead-integrate",
+      "requiredEvidence": ["pup-test-log", "implementation-result"],
       "blocking": true
     },
     {
       "id": "story-integration",
       "name": "Story integration complete",
-      "when": "before-architect-approve",
+      "when": "before-judge-approve",
       "requiredEvidence": ["integration-result", "story-test-log"],
       "blocking": true
     },
     {
-      "id": "architect-approval",
-      "name": "Architect approval",
+      "id": "judge-approval",
+      "name": "Judge approval",
       "when": "before-merge",
-      "requiredEvidence": ["review-result", "architect-approved"],
+      "requiredEvidence": ["review-result", "judge-approved"],
       "blocking": true
     },
     {
-      "id": "principal-checkpoint",
-      "name": "Principal checkpoint (advisory after ≥3 merges; does not pause unless blocking enabled)",
-      "when": "before-principal-checkpoint",
+      "id": "shepherd-checkpoint",
+      "name": "Shepherd checkpoint (advisory after ≥3 merges; does not pause unless blocking enabled)",
+      "when": "before-shepherd-checkpoint",
       "requiredEvidence": ["merged-story-batch", "parity-or-regression-notes"],
       "blocking": false
     },

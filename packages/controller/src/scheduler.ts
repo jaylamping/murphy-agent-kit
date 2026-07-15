@@ -20,10 +20,10 @@ export interface StoryLane {
 
 export interface WipLimits {
   storyLanes: number;
-  juniorsPerStory: number;
-  interns: number;
-  seniors: number;
-  architects: number;
+  pupsPerStory: number;
+  noses: number;
+  leads: number;
+  judges: number;
   sharedFoundationLanes: number;
 }
 
@@ -59,9 +59,9 @@ export class ParallelScheduler {
     active: {
       storyIds: Set<string>;
       subtaskIds: Set<string>;
-      internCount: number;
-      seniorCount: number;
-      architectCount: number;
+      noseCount: number;
+      leadCount: number;
+      judgeCount: number;
     },
   ): SchedulePlan {
     const result: SchedulePlan = {
@@ -140,7 +140,7 @@ export class ParallelScheduler {
       if (!active.storyIds.has(story.storyId) && !result.readyStories.includes(story.storyId)) {
         continue;
       }
-      const activeJuniors = [...active.subtaskIds].filter((id) =>
+      const activePups = [...active.subtaskIds].filter((id) =>
         id.startsWith(`${story.storyId}/`),
       ).length;
       const activeClaims: ResourceClaim[] = [];
@@ -184,11 +184,11 @@ export class ParallelScheduler {
           });
           continue;
         }
-        if (activeJuniors + result.readySubtasks.filter((r) => r.storyId === story.storyId).length >= this.limits.juniorsPerStory) {
+        if (activePups + result.readySubtasks.filter((r) => r.storyId === story.storyId).length >= this.limits.pupsPerStory) {
           result.blockedSubtasks.push({
             storyId: story.storyId,
             subtaskId: st.subtaskId,
-            reason: "wip-juniors-per-story",
+            reason: "wip-pups-per-story",
           });
           continue;
         }
@@ -203,24 +203,24 @@ export class ParallelScheduler {
     return result;
   }
 
-  canStartIntern(activeInterns: number): boolean {
-    return activeInterns < this.limits.interns;
+  canStartNose(activeNoses: number): boolean {
+    return activeNoses < this.limits.noses;
   }
 
-  canStartSenior(activeSeniors: number): boolean {
-    return activeSeniors < this.limits.seniors;
+  canStartLead(activeLeads: number): boolean {
+    return activeLeads < this.limits.leads;
   }
 
-  canStartArchitect(activeArchitects: number): boolean {
-    return activeArchitects < this.limits.architects;
+  canStartJudge(activeJudges: number): boolean {
+    return activeJudges < this.limits.judges;
   }
 }
 
 /**
- * Principal glance is due once merged-since-checkpoint reaches min (at least every min turns).
+ * Shepherd glance is due once merged-since-checkpoint reaches min (at least every min turns).
  * max is retained for profile docs; eligibility is count >= min.
  */
-export function shouldInvokePrincipal(
+export function shouldInvokeShepherd(
   mergedCount: number,
   min = 3,
   _max = 3,
@@ -228,8 +228,8 @@ export function shouldInvokePrincipal(
   return mergedCount >= min;
 }
 
-/** Principal glance due when merged count reaches min (default ≥3). */
-export function principalDue(
+/** Shepherd glance due when merged count reaches min (default ≥3). */
+export function shepherdDue(
   mergedSinceCheckpoint: number,
   min = 3,
   _max = 3,

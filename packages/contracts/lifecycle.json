@@ -13,23 +13,23 @@
     "released": []
   },
   "deliveryTransitions": {
-    "candidate": ["architect-ready"],
-    "architect-ready": ["subtask-ready"],
-    "subtask-ready": ["junior-complete"],
-    "junior-complete": ["senior-integrated"],
-    "senior-integrated": ["tests-passed"],
-    "tests-passed": ["architect-approved"],
-    "architect-approved": ["merge-ready"],
+    "candidate": ["judge-ready"],
+    "judge-ready": ["subtask-ready"],
+    "subtask-ready": ["pup-complete"],
+    "pup-complete": ["lead-integrated"],
+    "lead-integrated": ["tests-passed"],
+    "tests-passed": ["judge-approved"],
+    "judge-approved": ["merge-ready"],
     "merge-ready": []
   },
   "batchTransitions": {
     "batch-open": ["three-or-four-stories-merged"],
-    "three-or-four-stories-merged": ["principal-review"],
-    "principal-review": ["continue", "corrective-work", "human-escalation"],
+    "three-or-four-stories-merged": ["shepherd-review"],
+    "shepherd-review": ["continue", "corrective-work", "human-escalation"],
     "continue": ["batch-open"],
-    "corrective-work": ["principal-review", "batch-open"],
+    "corrective-work": ["shepherd-review", "batch-open"],
     "human-escalation": []
   },
-  "principalCheckpointEvery": { "min": 3, "max": 3 },
-  "principalCheckpointBlocking": false
+  "shepherdCheckpointEvery": { "min": 3, "max": 3 },
+  "shepherdCheckpointBlocking": false
 }

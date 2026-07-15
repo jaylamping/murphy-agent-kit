@@ -6,7 +6,7 @@
 
 Specification-Driven Development orchestration for Cursor.
 
-`/murphy` is the UI. The TypeScript controller owns the workflow: state, gates, worktrees, models, evidence, leases, and recovery. Intern, Junior, Senior, Architect, and Principal launch as top-level `@cursor/sdk` agents with explicit models and isolated worktrees. Skills guide behavior. They do not enforce it.
+`/murphy` is the UI. The TypeScript controller owns the workflow: state, gates, worktrees, models, evidence, leases, and recovery. Murphy conducts the crew. Nose, Pup, Lead, Judge, and Shepherd launch as top-level `@cursor/sdk` agents with explicit models and isolated worktrees. Skills guide behavior. They do not enforce it.
 
 The first proving ground is a consumer-port profile set. Consumer-specific Jira fields, Quarkus rules, peer services, and env names (e.g. QA) live in profiles, never in the core. Core delivery posture is **non-production-first** — profiles map that to concrete environments.
 
@@ -31,20 +31,20 @@ v1 ships the orchestration kernel, roles, adapters, profiles, evidence model, an
 flowchart TD
   User["User invokes /murphy"] --> Plugin["Cursor plugin and skill UI"]
   Plugin --> Controller["TypeScript controller: authoritative state machine"]
-  Controller --> Discovery["Intern SDK agent pool: readonly workspace"]
-  Discovery --> ArchitectPreflight["Architect preflight: readonly"]
-  ArchitectPreflight --> Juniors["Junior subagents: writable isolated worktrees"]
-  Juniors --> Senior["Senior subagent: writable integration and fixes"]
-  Senior --> CI["Controller validators and CI gates"]
-  CI --> ArchitectReview["Architect final review: readonly"]
-  ArchitectReview --> StoryMerge["Merge-ready Story"]
+  Controller --> Discovery["Nose SDK agent pool: readonly workspace"]
+  Discovery --> JudgePreflight["Judge preflight: readonly"]
+  JudgePreflight --> Pups["Pup subagents: writable isolated worktrees"]
+  Pups --> Lead["Lead subagent: writable integration and fixes"]
+  Lead --> CI["Controller validators and CI gates"]
+  CI --> JudgeReview["Judge final review: readonly"]
+  JudgeReview --> StoryMerge["Merge-ready Story"]
   StoryMerge --> BatchCount{"3 or 4 Stories merged?"}
   BatchCount -->|no| Controller
-  BatchCount -->|yes| Principal["Principal progress review: readonly"]
-  Principal -->|continue| Controller
-  Principal -->|correct| Corrections["Create and prioritize corrective work"]
+  BatchCount -->|yes| Shepherd["Shepherd progress review: readonly"]
+  Shepherd -->|continue| Controller
+  Shepherd -->|correct| Corrections["Create and prioritize corrective work"]
   Corrections --> Controller
-  Principal -->|escalate| Human["Human intervention"]
+  Shepherd -->|escalate| Human["Human intervention"]
 ```
 
 The controller launches every role as a local SDK agent with an explicit model and `cwd`. Role agents return structured requests; they do not nest-delegate children. That keeps dispatch off the model's judgment and inside the state machine.
@@ -53,11 +53,11 @@ The controller launches every role as a local SDK agent with an explicit model a
 
 | Role | Access | Job |
 |------|--------|-----|
-| Intern | Readonly | Cheap exploration and discovery for everyone else |
-| Junior | Writable in assigned Subtask worktree | Implement one Subtask |
-| Senior | Writable on Story integration worktree | Integrate Junior work, fix failures |
-| Architect | Readonly | Preflight and final architecture/parity review |
-| Principal | Readonly | Advisory glance after ≥3 merged Stories; pause only if blocking enabled or escalate |
+| Nose | Readonly | Sniffs the repo; cheap discovery for everyone else |
+| Pup | Writable in assigned Subtask worktree | Digs one Subtask |
+| Lead | Writable on Story integration worktree | Gathers Pup work, fixes failures |
+| Judge | Readonly | Preflight and final architecture/parity review |
+| Shepherd | Readonly | Advisory glance after ≥3 merged Stories; pause only if blocking enabled or escalate |
 
 No role approves its own work. No automatic merge or production action.
 
@@ -119,14 +119,14 @@ Set `MURPHY_PROFILE` to pick a default. Keep consumer keys and Quarkus specifics
 
 ## State
 
-Durable SQLite state lives at `~/.murphy-agent-kit/state/murphy-agent-kit.db`. WAL mode, owner-only permissions on POSIX. Credentials never go there. Override the root with `MURPHY_STATE_DIR`.
+Durable SQLite state lives at `~/.murphy-agent-kit/state/murphy-agent-kit.db`. WAL mode, owner-only permissions on POSIX. Credentials never go there. Override the root with `MURPHY_STATE_DIR`. Schema version 2 migrates sheepdog role/state names in place.
 
 ## Repo map
 
 ```text
 murphy-agent-kit/
 ├── skills/murphy/          # /murphy UI skill
-├── roles/                  # Intern → Principal prompts
+├── roles/                  # Nose → Shepherd prompts
 ├── packages/controller/    # Authoritative CLI + state machine
 ├── packages/contracts/     # Schemas and role permissions
 ├── adapters/               # Specs, Jira, GitHub, evidence

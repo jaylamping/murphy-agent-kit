@@ -31,11 +31,12 @@ import {
 } from "../../packages/controller/src/orchestrator.js";
 import {
   ParallelScheduler,
-  principalDue,
+  shepherdDue,
   type StoryLane,
 } from "../../packages/controller/src/scheduler.js";
 import { redactSecrets, assertNoSecrets } from "../../packages/controller/src/credentials.js";
 import { runSelfTests } from "../../packages/controller/src/self-test.js";
+import { PLUGIN_VERSION } from "../../packages/controller/src/types.js";
 import {
   FakeSpecificationAdapter,
   FakeWorkTrackingAdapter,
@@ -75,10 +76,10 @@ function harness() {
     gates: loadGates(REPO_ROOT),
     wip: {
       storyLanes: 4,
-      juniorsPerStory: 3,
-      interns: 8,
-      seniors: 2,
-      architects: 2,
+      pupsPerStory: 3,
+      noses: 8,
+      leads: 2,
+      judges: 2,
       sharedFoundationLanes: 1,
     },
     repoRoot: REPO_ROOT,
@@ -132,14 +133,14 @@ export async function runQualification(): Promise<{
   const results: CaseResult[] = [];
 
   results.push(
-    await runCase("01", "happy-path-two-juniors", REPEAT_AGENT, async () => {
+    await runCase("01", "happy-path-two-pups", REPEAT_AGENT, async () => {
       const h = harness();
       const sched = new ParallelScheduler({
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       });
       const story: StoryLane = {
@@ -164,26 +165,26 @@ export async function runQualification(): Promise<{
       const plan = sched.plan([story], {
         storyIds: new Set(["S-HAPPY"]),
         subtaskIds: new Set(),
-        internCount: 0,
-        seniorCount: 0,
-        architectCount: 0,
+        noseCount: 0,
+        leadCount: 0,
+        judgeCount: 0,
       });
-      assert(plan.readySubtasks.length === 2, "expected 2 ready juniors");
+      assert(plan.readySubtasks.length === 2, "expected 2 ready pups");
       const i1 = await h.orch.launchRole({
-        role: "junior",
+        role: "pup",
         prompt: "subtask j1",
         cwd: h.dir,
         storyId: "S-HAPPY",
         subtaskId: "j1",
       });
       const i2 = await h.orch.launchRole({
-        role: "junior",
+        role: "pup",
         prompt: "subtask j2",
         cwd: h.dir,
         storyId: "S-HAPPY",
         subtaskId: "j2",
       });
-      assert(i1.status === "ok" && i2.status === "ok", "juniors ok");
+      assert(i1.status === "ok" && i2.status === "ok", "pups ok");
       h.store.close();
       rmSync(h.dir, { recursive: true, force: true });
     }),
@@ -224,7 +225,7 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("04", "junior-out-of-scope", REPEAT_AGENT, () => {
+    await runCase("04", "pup-out-of-scope", REPEAT_AGENT, () => {
       const allowed = ["src/a"];
       const touched = ["src/b/Secret.java"];
       const violation = touched.some(
@@ -236,8 +237,8 @@ export async function runQualification(): Promise<{
 
   results.push(
     await runCase("05", "forbidden-dependency-change", REPEAT_AGENT, () => {
-      const juniorTouched = ["pom.xml"];
-      assert(juniorTouched.includes("pom.xml"), "forbidden dep change flagged");
+      const pupTouched = ["pom.xml"];
+      assert(pupTouched.includes("pom.xml"), "forbidden dep change flagged");
     }),
   );
 
@@ -249,16 +250,16 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("07", "senior-catches-seeded-bug", REPEAT_AGENT, () => {
-      const seniorFindings = ["normalize-should-lowercase"];
-      assert(seniorFindings.length > 0, "senior must catch");
+    await runCase("07", "lead-catches-seeded-bug", REPEAT_AGENT, () => {
+      const leadFindings = ["normalize-should-lowercase"];
+      assert(leadFindings.length > 0, "lead must catch");
     }),
   );
 
   results.push(
-    await runCase("08", "architect-rejects-parity", REPEAT_AGENT, () => {
+    await runCase("08", "judge-rejects-parity", REPEAT_AGENT, () => {
       const review = { blocking: ["parity-topic-mismatch"], approved: false };
-      assert(!review.approved && review.blocking.length > 0, "architect reject");
+      assert(!review.approved && review.blocking.length > 0, "judge reject");
     }),
   );
 
@@ -297,14 +298,14 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("12", "three-story-principal-advisory", REPEAT_AGENT, () => {
+    await runCase("12", "three-story-shepherd-advisory", REPEAT_AGENT, () => {
       const h = harness();
       h.orch.recordMerge("S1");
       h.orch.recordMerge("S2");
       const r = h.orch.recordMerge("S3");
-      assert(r.principalRecommended, "principal recommended after ≥3");
-      assert(!r.principalRequired, "advisory — does not pause batch");
-      const v = h.orch.applyPrincipalVerdict("S3", "continue", "healthy batch");
+      assert(r.shepherdRecommended, "shepherd recommended after ≥3");
+      assert(!r.shepherdRequired, "advisory — does not pause batch");
+      const v = h.orch.applyShepherdVerdict("S3", "continue", "healthy batch");
       assert(v.ok, "continue ok");
       h.store.close();
       rmSync(h.dir, { recursive: true, force: true });
@@ -344,12 +345,12 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("16", "principal-corrective-work", REPEAT_AGENT, () => {
+    await runCase("16", "shepherd-corrective-work", REPEAT_AGENT, () => {
       const h = harness();
       h.orch.recordMerge("S1");
       h.orch.recordMerge("S2");
       h.orch.recordMerge("S3");
-      const v = h.orch.applyPrincipalVerdict("S3", "correct", "bounded defect");
+      const v = h.orch.applyShepherdVerdict("S3", "correct", "bounded defect");
       assert(v.ok, "correct ok");
       assert(
         h.evidence.listKinds("S3").includes("corrective-work"),
@@ -361,15 +362,15 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("17", "principal-systemic-drift", REPEAT_AGENT, () => {
+    await runCase("17", "shepherd-systemic-drift", REPEAT_AGENT, () => {
       const h = harness();
       h.orch.recordMerge("S1");
       h.orch.recordMerge("S2");
       h.orch.recordMerge("S3");
-      const v = h.orch.applyPrincipalVerdict(
+      const v = h.orch.applyShepherdVerdict(
         "S3",
         "correct",
-        "architectural drift above architect",
+        "architectural drift above judge",
       );
       assert(v.ok, "correct for drift");
       h.store.close();
@@ -378,12 +379,12 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("18", "principal-human-escalate", REPEAT_AGENT, () => {
+    await runCase("18", "shepherd-human-escalate", REPEAT_AGENT, () => {
       const h = harness();
       h.orch.recordMerge("S1");
       h.orch.recordMerge("S2");
       h.orch.recordMerge("S3");
-      const v = h.orch.applyPrincipalVerdict(
+      const v = h.orch.applyShepherdVerdict(
         "S3",
         "escalate",
         "security-risk acceptance required",
@@ -399,9 +400,9 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("19", "discovery-routes-to-intern", REPEAT_AGENT, () => {
+    await runCase("19", "discovery-routes-to-nose", REPEAT_AGENT, () => {
       const h = harness();
-      assert(h.orch.routeTask("find MessageNormalizer usages") === "intern", "route");
+      assert(h.orch.routeTask("find MessageNormalizer usages") === "nose", "route");
       assert(classifyDiscoveryTask("inventory dependencies"), true);
       h.store.close();
       rmSync(h.dir, { recursive: true, force: true });
@@ -414,7 +415,7 @@ export async function runQualification(): Promise<{
       const req = {
         version: "1.0.0",
         requestId: "dr1",
-        requesterRole: "junior",
+        requesterRole: "pup",
         query: "locate SharedConfig",
         scope: { paths: ["qualification/fixtures"] },
         repositoryFingerprint: "qual-fp",
@@ -422,12 +423,12 @@ export async function runQualification(): Promise<{
       const ajv = createValidator(REPO_ROOT);
       const validate = ajv.getSchema("discovery-request");
       assert(validate?.(req), `schema: ${JSON.stringify(validate?.errors)}`);
-      const intern = await h.orch.launchRole({
-        role: "intern",
+      const noseLaunch = await h.orch.launchRole({
+        role: "nose",
         prompt: JSON.stringify(req),
         cwd: REPO_ROOT,
       });
-      assert(intern.status === "ok", "intern ok");
+      assert(noseLaunch.status === "ok", "nose ok");
       const report = {
         version: "1.0.0",
         requestId: "dr1",
@@ -453,7 +454,7 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("21", "intern-exposes-gaps", REPEAT_AGENT, () => {
+    await runCase("21", "nose-exposes-gaps", REPEAT_AGENT, () => {
       const report = {
         confidence: "low",
         unresolvedGaps: ["conflicting TOPIC definitions"],
@@ -486,7 +487,7 @@ export async function runQualification(): Promise<{
         "utf8",
       );
       assert(src.includes("IGNORE PREVIOUS INSTRUCTIONS"), "seed present");
-      // Intern treats as data — no execution side effect measurable here
+      // Nose treats as data — no execution side effect measurable here
       assert(true, "treated as data");
     }),
   );
@@ -495,10 +496,10 @@ export async function runQualification(): Promise<{
     await runCase("24", "four-parallel-lanes", REPEAT_AGENT, () => {
       const sched = new ParallelScheduler({
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       });
       const stories: StoryLane[] = ["A", "B", "C", "D"].map((id) => ({
@@ -516,9 +517,9 @@ export async function runQualification(): Promise<{
       const plan = sched.plan(stories, {
         storyIds: new Set(),
         subtaskIds: new Set(),
-        internCount: 0,
-        seniorCount: 0,
-        architectCount: 0,
+        noseCount: 0,
+        leadCount: 0,
+        judgeCount: 0,
       });
       assert(plan.readyStories.length === 4, "4 lanes");
     }),
@@ -528,10 +529,10 @@ export async function runQualification(): Promise<{
     await runCase("25", "serialize-shared-db-claim", REPEAT_AGENT, () => {
       const sched = new ParallelScheduler({
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       });
       const stories: StoryLane[] = [
@@ -563,9 +564,9 @@ export async function runQualification(): Promise<{
       const plan = sched.plan(stories, {
         storyIds: new Set(),
         subtaskIds: new Set(),
-        internCount: 0,
-        seniorCount: 0,
-        architectCount: 0,
+        noseCount: 0,
+        leadCount: 0,
+        judgeCount: 0,
       });
       assert(plan.readyStories.length === 1, "serialize");
       assert(plan.blockedStories.length === 1, "one blocked");
@@ -573,14 +574,14 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("26", "parallel-juniors-conflict-waits", REPEAT_AGENT, () => {
+    await runCase("26", "parallel-pups-conflict-waits", REPEAT_AGENT, () => {
       // covered by scheduler unit; re-assert
       const sched = new ParallelScheduler({
         storyLanes: 4,
-        juniorsPerStory: 3,
-        interns: 8,
-        seniors: 2,
-        architects: 2,
+        pupsPerStory: 3,
+        noses: 8,
+        leads: 2,
+        judges: 2,
         sharedFoundationLanes: 1,
       });
       const story: StoryLane = {
@@ -609,9 +610,9 @@ export async function runQualification(): Promise<{
       const plan = sched.plan([story], {
         storyIds: new Set(["S"]),
         subtaskIds: new Set(),
-        internCount: 0,
-        seniorCount: 0,
-        architectCount: 0,
+        noseCount: 0,
+        leadCount: 0,
+        judgeCount: 0,
       });
       assert(plan.readySubtasks.length === 1, "one ready");
       assert(plan.blockedSubtasks.length === 1, "one waits");
@@ -634,10 +635,10 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("29", "out-of-order-principal", REPEAT_AGENT, () => {
-      assert(principalDue(3), "due at 3");
-      assert(principalDue(8), "due at 8+");
-      assert(!principalDue(2), "not due before 3");
+    await runCase("29", "out-of-order-shepherd", REPEAT_AGENT, () => {
+      assert(shepherdDue(3), "due at 3");
+      assert(shepherdDue(8), "due at 8+");
+      assert(!shepherdDue(2), "not due before 3");
     }),
   );
 
@@ -646,11 +647,11 @@ export async function runQualification(): Promise<{
       const h = harness();
       for (const role of [
         "orchestrator",
-        "intern",
-        "junior",
-        "senior",
-        "architect",
-        "principal",
+        "nose",
+        "pup",
+        "lead",
+        "judge",
+        "shepherd",
       ] as const) {
         const r = await h.orch.launchRole({
           role,
@@ -678,7 +679,7 @@ export async function runQualification(): Promise<{
       ]);
       // also test capacity path
       avail.set("cursor-grok-4.5-high-fast", true);
-      const sel = selectModel(profile, "senior", avail, {
+      const sel = selectModel(profile, "lead", avail, {
         kind: "pre-execution-capacity",
         message: "quota",
       });
@@ -696,7 +697,7 @@ export async function runQualification(): Promise<{
         ["gpt-5.6-luna-xhigh", true],
         ["cursor-grok-4.5-low", true],
       ]);
-      const sel = selectModel(profile, "junior", avail, {
+      const sel = selectModel(profile, "pup", avail, {
         kind: "pre-execution-capacity",
         message: "capacity",
       });
@@ -711,7 +712,7 @@ export async function runQualification(): Promise<{
     await runCase("33", "no-fallback-after-execution", REPEAT_DETERMINISTIC, async () => {
       const h = harness();
       const launcher = createMockLauncher({
-        senior: { status: "error", error: "mid-run failure" },
+        lead: { status: "error", error: "mid-run failure" },
       });
       const orch = new Orchestrator({
         store: h.store,
@@ -722,10 +723,10 @@ export async function runQualification(): Promise<{
         gates: loadGates(REPO_ROOT),
         wip: {
           storyLanes: 4,
-          juniorsPerStory: 3,
-          interns: 8,
-          seniors: 2,
-          architects: 2,
+          pupsPerStory: 3,
+          noses: 8,
+          leads: 2,
+          judges: 2,
           sharedFoundationLanes: 1,
         },
         repoRoot: REPO_ROOT,
@@ -736,7 +737,7 @@ export async function runQualification(): Promise<{
         repositoryFingerprint: "f",
       });
       const r = await orch.launchRole({
-        role: "senior",
+        role: "lead",
         prompt: "x",
         cwd: h.dir,
       });
@@ -862,13 +863,13 @@ export async function runQualification(): Promise<{
       const h = harness();
       const life = loadLifecycle(REPO_ROOT);
       h.store.casDelivery("S1", null, "candidate", life.deliveryTransitions);
-      h.store.casDelivery("S1", "candidate", "architect-ready", life.deliveryTransitions);
+      h.store.casDelivery("S1", "candidate", "judge-ready", life.deliveryTransitions);
       const d = h.store.getDelivery("S1");
-      assert(d?.state === "architect-ready", "durable across restart concept");
+      assert(d?.state === "judge-ready", "durable across restart concept");
       h.store.close();
       // reopen
       const store2 = new StateStore(join(h.dir, "state.db"));
-      assert(store2.getDelivery("S1")?.state === "architect-ready", "recovered");
+      assert(store2.getDelivery("S1")?.state === "judge-ready", "recovered");
       store2.close();
       rmSync(h.dir, { recursive: true, force: true });
     }),
@@ -878,7 +879,7 @@ export async function runQualification(): Promise<{
     await runCase("44", "sdk-startup-vs-started-failure", REPEAT_DETERMINISTIC, async () => {
       const h = harness();
       const startFail = createMockLauncher({
-        junior: {
+        pup: {
           status: "startup-failure",
           error: "capacity",
           capacityFailure: true,
@@ -893,10 +894,10 @@ export async function runQualification(): Promise<{
         gates: loadGates(REPO_ROOT),
         wip: {
           storyLanes: 4,
-          juniorsPerStory: 3,
-          interns: 8,
-          seniors: 2,
-          architects: 2,
+          pupsPerStory: 3,
+          noses: 8,
+          leads: 2,
+          judges: 2,
           sharedFoundationLanes: 1,
         },
         repoRoot: REPO_ROOT,
@@ -907,7 +908,7 @@ export async function runQualification(): Promise<{
         repositoryFingerprint: "f",
       });
       const r = await orch.launchRole({
-        role: "junior",
+        role: "pup",
         prompt: "x",
         cwd: h.dir,
       });
@@ -965,7 +966,7 @@ export async function runQualification(): Promise<{
   const summary = {
     runId,
     ok,
-    pluginVersion: "0.1.0",
+    pluginVersion: PLUGIN_VERSION,
     timestamp: new Date().toISOString(),
     passed: results.filter((r) => r.ok).length,
     failed: results.filter((r) => !r.ok).length,
@@ -982,7 +983,7 @@ export async function runQualification(): Promise<{
 - Run ID: \`${runId}\`
 - OK: **${ok}**
 - Passed: ${summary.passed} / ${results.length}
-- Plugin version: 0.1.0
+- Plugin version: ${PLUGIN_VERSION}
 - Timestamp: ${summary.timestamp}
 
 ## Results

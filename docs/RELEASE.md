@@ -1,5 +1,39 @@
 # Release
 
+## v0.2.0 — sheepdog crew rename
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.2.0` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.3` |
+| State schema version | `2` |
+| Git tag | `v0.2.0` |
+| Git SHA | `PENDING` |
+| Qualification | 47/47; see `docs/QUALIFICATION-REPORT.md` |
+
+### Breaking changes
+
+- Roles: `intern→nose`, `junior→pup`, `senior→lead`, `architect→judge`, `principal→shepherd` (orchestrator kept)
+- Delivery/batch/gate tokens renamed with the crew (`judge-ready`, `pup-complete`, `shepherd-review`, …)
+- WIP keys: `noses`, `pupsPerStory`, `leads`, `judges`; `shepherdCheckpointEvery`
+- SQLite migrates v1→v2 on open (rewrites `runs.role`, delivery states, evidence kinds)
+
+### Changes
+
+- Murphy conducts the crew; light sheepdog flavor in CLI help, `status` crew blurb, hook denies, role openers
+- Judge permissions aligned to readonly review
+
+### Install this release
+
+```bash
+git checkout v0.2.0
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.2.0
+```
+
 ## v0.1.7 — advisory Principal (≥3 turns); hard-stop only when crucial
 
 | Field | Value |

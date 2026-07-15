@@ -17,7 +17,7 @@
       ],
       "forbiddenActions": ["edit-source", "merge-pr", "mutate-jira"]
     },
-    "intern": {
+    "nose": {
       "canMutateCode": false,
       "canMutateTickets": false,
       "canApproveMerge": false,
@@ -37,7 +37,7 @@
         "merge"
       ]
     },
-    "junior": {
+    "pup": {
       "canMutateCode": true,
       "canMutateTickets": false,
       "canApproveMerge": false,
@@ -49,9 +49,9 @@
         "request-discovery",
         "commit-in-worktree"
       ],
-      "forbiddenActions": ["merge-pr", "approve-architecture", "mutate-jira"]
+      "forbiddenActions": ["merge-pr", "approve-design", "mutate-jira"]
     },
-    "senior": {
+    "lead": {
       "canMutateCode": true,
       "canMutateTickets": false,
       "canApproveMerge": false,
@@ -64,25 +64,30 @@
         "request-discovery",
         "prepare-pr"
       ],
-      "forbiddenActions": ["final-architect-approve", "principal-verdict"]
+      "forbiddenActions": ["final-judge-approve", "shepherd-verdict"]
     },
-    "architect": {
-      "canMutateCode": true,
-      "canMutateTickets": true,
-      "canApproveMerge": true,
+    "judge": {
+      "canMutateCode": false,
+      "canMutateTickets": false,
+      "canApproveMerge": false,
       "canEscalateToHuman": true,
-      "readonly": false,
+      "readonly": true,
       "allowedActions": [
-        "design",
-        "decompose-stories",
+        "preflight-review",
+        "parity-review",
         "approve-story",
+        "reject-story",
         "request-discovery",
-        "open-pr",
         "escalate"
       ],
-      "forbiddenActions": ["principal-verdict"]
+      "forbiddenActions": [
+        "edit-source",
+        "merge-pr",
+        "shepherd-verdict",
+        "mutate-jira"
+      ]
     },
-    "principal": {
+    "shepherd": {
       "canMutateCode": false,
       "canMutateTickets": false,
       "canApproveMerge": false,

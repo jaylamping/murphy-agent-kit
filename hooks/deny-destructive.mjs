@@ -40,14 +40,14 @@ function main() {
 
   const command = String(payload.command ?? payload.cmd ?? "");
   const role = String(process.env.MURPHY_ROLE ?? payload.role ?? "unknown");
-  const readonlyRoles = new Set(["intern", "architect", "principal", "orchestrator"]);
+  const readonlyRoles = new Set(["nose", "judge", "shepherd", "orchestrator"]);
 
   for (const re of DENY_PATTERNS) {
     if (re.test(command)) {
       console.log(
         JSON.stringify({
           permission: "deny",
-          reason: `murphy-hook: destructive pattern matched (${re})`,
+          reason: `murphy-hook: that command would scatter the flock (${re})`,
         }),
       );
       process.exit(0);
@@ -60,7 +60,7 @@ function main() {
         console.log(
           JSON.stringify({
             permission: "deny",
-            reason: `murphy-hook: readonly role ${role} cannot run mutating command`,
+            reason: `murphy-hook: ${role} is on a sit-stay (readonly); mutating command blocked`,
           }),
         );
         process.exit(0);

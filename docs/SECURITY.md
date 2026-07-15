@@ -4,7 +4,7 @@
 
 - Read `CURSOR_API_KEY` and adapter credentials from environment/keychain only.
 - Never store credentials in YAML, SQLite, context packets, prompts, transcripts, caches, or evidence.
-- Intern, Architect, and Principal receive no mutating Jira/GitHub credentials.
+- Nose, Judge, and Shepherd receive no mutating Jira/GitHub credentials.
 - Only the controller performs approved external mutations through adapters with idempotency keys.
 
 ## Redaction

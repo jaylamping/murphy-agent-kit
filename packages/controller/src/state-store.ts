@@ -134,10 +134,67 @@ export class StateStore {
     const row = this.db
       .prepare("SELECT value FROM meta WHERE key = ?")
       .get("state_schema_version") as { value: string } | undefined;
+    const currentVersion = row ? Number(row.value) : 0;
     if (!row) {
       this.db
         .prepare("INSERT INTO meta (key, value) VALUES (?, ?)")
         .run("state_schema_version", String(STATE_SCHEMA_VERSION));
+    } else if (currentVersion < 2) {
+      this.migrateV1ToV2();
+      this.db
+        .prepare(
+          `INSERT INTO meta (key, value) VALUES (?, ?)
+           ON CONFLICT(key) DO UPDATE SET value=excluded.value`,
+        )
+        .run("state_schema_version", "2");
+    } else if (currentVersion < STATE_SCHEMA_VERSION) {
+      this.db
+        .prepare(
+          `INSERT INTO meta (key, value) VALUES (?, ?)
+           ON CONFLICT(key) DO UPDATE SET value=excluded.value`,
+        )
+        .run("state_schema_version", String(STATE_SCHEMA_VERSION));
+    }
+  }
+
+  /** Sheepdog role rename: intern/junior/... → nose/pup/... */
+  private migrateV1ToV2(): void {
+    const roleMap: Record<string, string> = {
+      intern: "nose",
+      junior: "pup",
+      senior: "lead",
+      architect: "judge",
+      principal: "shepherd",
+    };
+    const stateMap: Record<string, string> = {
+      "architect-ready": "judge-ready",
+      "junior-complete": "pup-complete",
+      "senior-integrated": "lead-integrated",
+      "architect-approved": "judge-approved",
+    };
+    const batchMap: Record<string, string> = {
+      "principal-review": "shepherd-review",
+    };
+    const kindMap: Record<string, string> = {
+      "principal-verdict": "shepherd-verdict",
+      "architect-approved": "judge-approved",
+      "junior-test-log": "pup-test-log",
+      "principal-checkpoint-due": "shepherd-checkpoint-due",
+    };
+
+    for (const [from, to] of Object.entries(roleMap)) {
+      this.db.prepare("UPDATE runs SET role = ? WHERE role = ?").run(to, from);
+    }
+    for (const [from, to] of Object.entries(stateMap)) {
+      this.db.prepare("UPDATE delivery SET state = ? WHERE state = ?").run(to, from);
+    }
+    for (const [from, to] of Object.entries(batchMap)) {
+      this.db
+        .prepare("UPDATE delivery SET batch_state = ? WHERE batch_state = ?")
+        .run(to, from);
+    }
+    for (const [from, to] of Object.entries(kindMap)) {
+      this.db.prepare("UPDATE evidence SET kind = ? WHERE kind = ?").run(to, from);
     }
   }
 

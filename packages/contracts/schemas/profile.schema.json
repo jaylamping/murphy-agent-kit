@@ -27,9 +27,9 @@
     "rolePolicy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["principalCheckpointEvery"],
+      "required": ["shepherdCheckpointEvery"],
       "properties": {
-        "principalCheckpointEvery": {
+        "shepherdCheckpointEvery": {
           "type": "object",
           "additionalProperties": false,
           "required": ["min", "max"],
@@ -38,9 +38,9 @@
             "max": { "type": "integer", "minimum": 1 }
           }
         },
-        "principalCheckpointBlocking": {
+        "shepherdCheckpointBlocking": {
           "type": "boolean",
-          "description": "When false (default), Principal after min merges is advisory and does not pause the batch. Hard stops remain for escalate, failed tests, architect rejection, security."
+          "description": "When false (default), Shepherd after min merges is advisory and does not pause the batch. Hard stops remain for escalate, failed tests, Judge rejection, security."
         },
         "oneStoryOnePr": { "type": "boolean" },
         "noSelfApproval": { "type": "boolean" },
@@ -66,18 +66,18 @@
       "additionalProperties": false,
       "required": [
         "storyLanes",
-        "juniorsPerStory",
-        "interns",
-        "seniors",
-        "architects",
+        "pupsPerStory",
+        "noses",
+        "leads",
+        "judges",
         "sharedFoundationLanes"
       ],
       "properties": {
         "storyLanes": { "type": "integer", "minimum": 1 },
-        "juniorsPerStory": { "type": "integer", "minimum": 1 },
-        "interns": { "type": "integer", "minimum": 1 },
-        "seniors": { "type": "integer", "minimum": 1 },
-        "architects": { "type": "integer", "minimum": 1 },
+        "pupsPerStory": { "type": "integer", "minimum": 1 },
+        "noses": { "type": "integer", "minimum": 1 },
+        "leads": { "type": "integer", "minimum": 1 },
+        "judges": { "type": "integer", "minimum": 1 },
         "sharedFoundationLanes": { "type": "integer", "minimum": 0 }
       }
     },

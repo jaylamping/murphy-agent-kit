@@ -14,19 +14,19 @@
       "additionalProperties": false,
       "required": [
         "orchestrator",
-        "intern",
-        "junior",
-        "senior",
-        "architect",
-        "principal"
+        "nose",
+        "pup",
+        "lead",
+        "judge",
+        "shepherd"
       ],
       "properties": {
         "orchestrator": { "$ref": "#/$defs/roleModel" },
-        "intern": { "$ref": "#/$defs/roleModel" },
-        "junior": { "$ref": "#/$defs/roleModel" },
-        "senior": { "$ref": "#/$defs/roleModel" },
-        "architect": { "$ref": "#/$defs/roleModel" },
-        "principal": { "$ref": "#/$defs/roleModel" }
+        "nose": { "$ref": "#/$defs/roleModel" },
+        "pup": { "$ref": "#/$defs/roleModel" },
+        "lead": { "$ref": "#/$defs/roleModel" },
+        "judge": { "$ref": "#/$defs/roleModel" },
+        "shepherd": { "$ref": "#/$defs/roleModel" }
       }
     }
   },

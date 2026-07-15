@@ -13,7 +13,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "trigger", "action", "severity"],
+        "required": ["id", "trigger", "action", "owner"],
         "properties": {
           "id": { "type": "string" },
           "trigger": {
@@ -23,7 +23,7 @@
               "claim-conflict",
               "lease-stale",
               "model-unavailable",
-              "principal-escalate",
+              "shepherd-escalate",
               "credential-missing",
               "recovery-ambiguous",
               "human-required"
@@ -34,15 +34,15 @@
             "enum": [
               "retry-with-fallback",
               "pause-lane",
-              "reroute-to-architect",
+              "reroute-to-judge",
               "open-corrective-work",
               "escalate-to-human",
               "abort-run"
             ]
           },
-          "severity": {
+          "owner": {
             "type": "string",
-            "enum": ["orchestrator", "architect", "principal", "human"]
+            "enum": ["orchestrator", "judge", "shepherd", "human"]
           },
           "description": { "type": "string" }
         }

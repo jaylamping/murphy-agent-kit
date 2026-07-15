@@ -12,12 +12,12 @@
       "type": "string",
       "enum": [
         "candidate",
-        "architect-ready",
+        "judge-ready",
         "subtask-ready",
-        "junior-complete",
-        "senior-integrated",
+        "pup-complete",
+        "lead-integrated",
         "tests-passed",
-        "architect-approved",
+        "judge-approved",
         "merge-ready"
       ]
     },
@@ -26,7 +26,7 @@
       "enum": [
         "batch-open",
         "three-or-four-stories-merged",
-        "principal-review",
+        "shepherd-review",
         "continue",
         "corrective-work",
         "human-escalation"

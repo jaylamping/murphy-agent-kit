@@ -43,14 +43,14 @@ export function assertNoSecrets(input: string, context: string): void {
 }
 
 export function roleMayMutateExternal(role: string): boolean {
-  return role === "junior" || role === "senior" || role === "architect";
+  return role === "pup" || role === "lead";
 }
 
 export function roleIsReadonly(role: string): boolean {
   return (
-    role === "intern" ||
-    role === "architect" ||
-    role === "principal" ||
+    role === "nose" ||
+    role === "judge" ||
+    role === "shepherd" ||
     role === "orchestrator"
   );
 }

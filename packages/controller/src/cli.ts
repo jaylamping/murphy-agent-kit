@@ -21,9 +21,15 @@ Usage:
   murphy version
   murphy qualify   (delegate to qualification runner)
 
-The controller is the workflow authority. /murphy skill is UI only.
+Murphy conducts the crew. The controller holds the leash; /murphy is just the whistle.
 `);
   process.exit(1);
+}
+
+function crewBlurb(openRuns: number): string {
+  if (openRuns <= 0) return "all dogs home";
+  if (openRuns === 1) return "1 dog out on the course";
+  return `${openRuns} dogs out on the course`;
 }
 
 async function main(): Promise<void> {
@@ -60,6 +66,7 @@ async function main(): Promise<void> {
           stateDir: defaultStateDir(),
           dbPath: defaultDbPath(),
           openRuns: open.length,
+          crew: crewBlurb(open.length),
           modelProfile: loadModelProfile(REPO_ROOT).name,
         },
         null,

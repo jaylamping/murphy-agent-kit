@@ -8,41 +8,41 @@ Only the controller advances these states via CAS transitions after gate evidenc
 
 ## Delivery states (per Story)
 
-`candidate → architect-ready → subtask-ready → junior-complete → senior-integrated → tests-passed → architect-approved → merge-ready`
+`candidate → judge-ready → subtask-ready → pup-complete → lead-integrated → tests-passed → judge-approved → merge-ready`
 
 ## Batch governance
 
-`batch-open → (optional) principal-review → continue | corrective-work | human-escalation`
+`batch-open → (optional) shepherd-review → continue | corrective-work | human-escalation`
 
-After **≥3** merged Stories, a Principal glance is **recommended** (`principalCheckpointEvery.min`). By default this is **advisory** (`principalCheckpointBlocking: false`) — the batch stays open and work continues. The batch only pauses for Principal when blocking is explicitly enabled, or when a Principal **escalate** / other crucial gate fires.
+After **≥3** merged Stories, a Shepherd glance is **recommended** (`shepherdCheckpointEvery.min`). By default this is **advisory** (`shepherdCheckpointBlocking: false`) — the batch stays open and work continues. The batch only pauses for Shepherd when blocking is explicitly enabled, or when a Shepherd **escalate** / other crucial gate fires.
 
-Hard stops (do pause): failed tests, missing evidence, tracker mismatch, architect rejection, policy/credential issues, Principal escalate.
+Hard stops (do pause): failed tests, missing evidence, tracker mismatch, Judge rejection, policy/credential issues, Shepherd escalate.
 
 ## Role order
 
-1. **Intern** (default for search/inventory/trace) — readonly, cheapest
-2. **Architect** preflight — readonly
-3. **Junior** Subtasks — writable isolated worktrees, non-overlapping claims
-4. **Senior** integration — Story worktree
+1. **Nose** (default for search/inventory/trace) — readonly, cheapest
+2. **Judge** preflight — readonly
+3. **Pup** Subtasks — writable isolated worktrees, non-overlapping claims
+4. **Lead** integration — Story worktree
 5. Controller validators / CI gates
-6. **Architect** final review — readonly; approval requires zero blocking findings
+6. **Judge** final review — readonly; approval requires zero blocking findings
 7. Merge-ready (no automatic merge)
-8. **Principal** advisory glance after ≥3 Stories (does not pause unless blocking/escalate)
+8. **Shepherd** advisory glance after ≥3 Stories (does not pause unless blocking/escalate)
 
-## Default-to-Intern
+## Default-to-Nose
 
-All find/where/search/trace/inventory/locate tasks go to Intern unless evidence is already in context or a logged narrow-read exception applies.
+All find/where/search/trace/inventory/locate tasks go to Nose unless evidence is already in context or a logged narrow-read exception applies.
 
 ## Parallelism
 
-- Independent Intern searches may run concurrently
-- Junior Subtasks only when claims/paths do not overlap
+- Independent Nose searches may run concurrently
+- Pup Subtasks only when claims/paths do not overlap
 - Story lanes up to profile WIP caps
 - Shared foundation resources serialize via exclusive lease
 
 ## Stop conditions
 
-Pause only when crucial: ambiguity/scope drift that blocks progress, failed tests, missing evidence, tracker mismatch, policy denial, credential issues, or Principal **escalate** → per `packages/contracts/escalation.json`. Routine Principal cadence alone does not stop the flow.
+Pause only when crucial: ambiguity/scope drift that blocks progress, failed tests, missing evidence, tracker mismatch, policy denial, credential issues, or Shepherd **escalate** → per `packages/contracts/escalation.json`. Routine Shepherd cadence alone does not stop the flow.
 
 ## Non-production-first (core posture)
 

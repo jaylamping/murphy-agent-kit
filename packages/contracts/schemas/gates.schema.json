@@ -20,11 +20,11 @@
           "when": {
             "type": "string",
             "enum": [
-              "before-junior-start",
-              "before-senior-integrate",
-              "before-architect-approve",
+              "before-pup-start",
+              "before-lead-integrate",
+              "before-judge-approve",
               "before-merge",
-              "before-principal-checkpoint",
+              "before-shepherd-checkpoint",
               "before-sdd-transition"
             ]
           },
