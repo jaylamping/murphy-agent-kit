@@ -9,7 +9,7 @@
 | Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.1` |
 | State schema version | `1` |
 | Git tag | `v0.1.5` |
-| Git SHA | _(recorded after tag)_ |
+| Git SHA | `17abbfa6ef9ddceaa8c84cbc7286af6c3a84367b` |
 | Qualification | Unchanged from v0.1.0; see `docs/QUALIFICATION-REPORT.md` |
 
 ### Changes since v0.1.4
