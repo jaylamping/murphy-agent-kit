@@ -297,13 +297,15 @@ export async function runQualification(): Promise<{
   );
 
   results.push(
-    await runCase("12", "three-story-principal-continue", REPEAT_AGENT, () => {
+    await runCase("12", "five-story-principal-continue", REPEAT_AGENT, () => {
       const h = harness();
       h.orch.recordMerge("S1");
       h.orch.recordMerge("S2");
-      const r = h.orch.recordMerge("S3");
+      h.orch.recordMerge("S3");
+      h.orch.recordMerge("S4");
+      const r = h.orch.recordMerge("S5");
       assert(r.principalRequired, "principal required");
-      const v = h.orch.applyPrincipalVerdict("S3", "continue", "healthy batch");
+      const v = h.orch.applyPrincipalVerdict("S5", "continue", "healthy batch");
       assert(v.ok, "continue ok");
       h.store.close();
       rmSync(h.dir, { recursive: true, force: true });
@@ -634,8 +636,9 @@ export async function runQualification(): Promise<{
 
   results.push(
     await runCase("29", "out-of-order-principal", REPEAT_AGENT, () => {
-      assert(principalDue(3), "due at 3");
-      assert(principalDue(4), "due at 4");
+      assert(principalDue(5), "due at 5");
+      assert(principalDue(7), "due at 7");
+      assert(!principalDue(4), "not due at 4");
     }),
   );
 

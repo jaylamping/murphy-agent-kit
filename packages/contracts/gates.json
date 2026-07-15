@@ -40,7 +40,7 @@
     },
     {
       "id": "principal-checkpoint",
-      "name": "Principal checkpoint after 3-4 merges",
+      "name": "Principal checkpoint after 5-7 merges",
       "when": "before-principal-checkpoint",
       "requiredEvidence": ["merged-story-batch", "parity-or-regression-notes"],
       "blocking": true

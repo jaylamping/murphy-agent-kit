@@ -14,7 +14,7 @@ Only the controller advances these states via CAS transitions after gate evidenc
 
 `batch-open → three-or-four-stories-merged → principal-review → continue | corrective-work | human-escalation`
 
-Principal reviews every 3–4 merged Stories.
+Principal reviews every **5–7** merged Stories (profile `principalCheckpointEvery`; core default matches). The batch state id `three-or-four-stories-merged` is historical — thresholds come from the profile, not the name.
 
 ## Role order
 
@@ -25,7 +25,7 @@ Principal reviews every 3–4 merged Stories.
 5. Controller validators / CI gates
 6. **Architect** final review — readonly; approval requires zero blocking findings
 7. Merge-ready (no automatic merge)
-8. **Principal** checkpoint every 3–4 Stories
+8. **Principal** checkpoint every 5–7 Stories (profile-configurable)
 
 ## Default-to-Intern
 

@@ -1,5 +1,32 @@
 # Release
 
+## v0.1.6 — Principal checkpoint every 5–7 Stories
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.1.6` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.2` |
+| State schema version | `1` |
+| Git tag | `v0.1.6` |
+| Git SHA | _(recorded after tag)_ |
+| Qualification | Unchanged suite; Principal due window updated — see `docs/QUALIFICATION-REPORT.md` |
+
+### Changes since v0.1.5
+
+- `principalCheckpointEvery` default and consumer-port profiles: **min 5 / max 7** (was 3–4)
+- Docs/skills/README aligned; batch state id name unchanged (thresholds are profile-driven)
+
+### Install this release
+
+```bash
+git checkout v0.1.6
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.1.6
+```
+
 ## v0.1.5 — non-production-first in core
 
 | Field | Value |

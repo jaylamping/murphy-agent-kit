@@ -188,10 +188,11 @@ describe("scheduler", () => {
     );
   });
 
-  it("principalDue at 3-4", () => {
-    assert.equal(principalDue(2), false);
-    assert.equal(principalDue(3), true);
-    assert.equal(principalDue(4), true);
+  it("principalDue at 5-7", () => {
+    assert.equal(principalDue(4), false);
+    assert.equal(principalDue(5), true);
+    assert.equal(principalDue(7), true);
+    assert.equal(principalDue(8), false);
   });
 });
 
@@ -362,9 +363,11 @@ describe("orchestrator", () => {
 
     orch.recordMerge("S1");
     orch.recordMerge("S2");
-    const third = orch.recordMerge("S3");
-    assert.equal(third.principalRequired, true);
-    orch.applyPrincipalVerdict("S3", "continue", "healthy");
+    orch.recordMerge("S3");
+    orch.recordMerge("S4");
+    const fifth = orch.recordMerge("S5");
+    assert.equal(fifth.principalRequired, true);
+    orch.applyPrincipalVerdict("S5", "continue", "healthy");
 
     store.close();
     rmSync(dir, { recursive: true, force: true });

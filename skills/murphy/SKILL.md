@@ -49,4 +49,4 @@ pnpm murphy qualify
 - Auto-merge or take production action
 - Store credentials in chat, YAML, or evidence
 - Treat Intern inference as an approved decision
-- Skip Principal checkpoint after 3–4 merged Stories
+- Skip Principal checkpoint after 5–7 merged Stories (profile `principalCheckpointEvery`)

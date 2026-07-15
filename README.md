@@ -57,7 +57,7 @@ The controller launches every role as a local SDK agent with an explicit model a
 | Junior | Writable in assigned Subtask worktree | Implement one Subtask |
 | Senior | Writable on Story integration worktree | Integrate Junior work, fix failures |
 | Architect | Readonly | Preflight and final architecture/parity review |
-| Principal | Readonly | Every 3 or 4 merged Stories: `continue`, `correct`, or `escalate` |
+| Principal | Readonly | Every 5–7 merged Stories (profile): `continue`, `correct`, or `escalate` |
 
 No role approves its own work. No automatic merge or production action.
 

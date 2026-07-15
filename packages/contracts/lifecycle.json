@@ -30,5 +30,5 @@
     "corrective-work": ["principal-review", "batch-open"],
     "human-escalation": []
   },
-  "principalCheckpointEvery": { "min": 3, "max": 4 }
+  "principalCheckpointEvery": { "min": 5, "max": 7 }
 }

@@ -218,8 +218,8 @@ export class ParallelScheduler {
 
 export function shouldInvokePrincipal(
   mergedCount: number,
-  min = 3,
-  max = 4,
+  min = 5,
+  max = 7,
 ): boolean {
   return mergedCount >= min && mergedCount <= max
     ? mergedCount === min || mergedCount === max
@@ -231,8 +231,8 @@ export function shouldInvokePrincipal(
 /** Invoke principal when merged count reaches min..max threshold. */
 export function principalDue(
   mergedSinceCheckpoint: number,
-  min = 3,
-  max = 4,
+  min = 5,
+  max = 7,
 ): boolean {
   return mergedSinceCheckpoint >= min && mergedSinceCheckpoint <= max;
 }
