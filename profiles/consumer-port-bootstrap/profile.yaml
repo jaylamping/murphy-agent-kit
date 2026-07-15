@@ -10,6 +10,8 @@ terminology:
   subtask: Subtask
 trackerFields:
   inheritanceFromEpic: FAN360-13796
+  githubOrg: sporting-innovations
+  serviceRepo: sporting-innovations/consumer-service
   requiredMatchFields:
     - Team
     - Assignee
