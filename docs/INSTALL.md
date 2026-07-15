@@ -4,9 +4,9 @@
 
 1. Clone `jaylamping/murphy-agent-kit`.
 2. `pnpm install && pnpm build`
-3. `pnpm run install:local` — links into `~/.cursor/plugins/local/murphy-agent-kit` (symlink on macOS/Linux, directory junction on Windows)
-4. Reload Cursor
-5. Invoke `/murphy` or `pnpm murphy self-test`
+3. `pnpm run install:local` — **copies** into `~/.cursor/plugins/local/murphy-agent-kit` (out-of-tree symlinks are rejected by Cursor)
+4. **Developer: Reload Window**
+5. Confirm **Plugins** shows Murphy Agent Kit, then invoke `/murphy` or `pnpm murphy self-test`
 
 Do **not** install under `~/.cursor/skills-cursor/` (reserved for built-in skills).
 

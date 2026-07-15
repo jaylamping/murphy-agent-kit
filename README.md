@@ -21,9 +21,9 @@ pnpm build
 pnpm run install:local
 ```
 
-This links the repo into `~/.cursor/plugins/local/murphy-agent-kit` (symlink on macOS/Linux, directory junction on Windows). Reload Cursor after install.
+This copies the plugin into `~/.cursor/plugins/local/murphy-agent-kit` (Cursor rejects out-of-tree symlinks). Reload Cursor after install (**Developer: Reload Window**).
 
-On Windows, if linking fails, enable **Developer Mode** (Settings → System → For developers) and retry.
+On Windows, if copy/install fails, enable **Developer Mode** and retry. Re-run `pnpm run install:local` after pulling changes.
 
 Verify:
 

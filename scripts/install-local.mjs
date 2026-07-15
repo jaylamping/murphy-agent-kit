@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 /**
  * Install murphy-agent-kit into ~/.cursor/plugins/local/murphy-agent-kit
- * (symlink on POSIX; directory junction on Windows).
+ * as a real directory copy. Cursor rejects symlinks whose target is outside
+ * ~/.cursor/plugins/local (logs: "symlink target ... is outside ...").
  */
-import { mkdirSync, rmSync, symlinkSync, existsSync, readFileSync } from "node:fs";
+import {
+  mkdirSync,
+  rmSync,
+  existsSync,
+  readFileSync,
+  cpSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -19,34 +26,34 @@ if (existsSync(target)) {
   rmSync(target, { recursive: true, force: true });
 }
 
-const isWindows = process.platform === "win32";
-/** Junctions do not require elevated privileges on Windows; symlinks often do. */
-const linkType = isWindows ? "junction" : "dir";
-const method = isWindows ? "junction-local" : "symlink-local";
+cpSync(repoRoot, target, {
+  recursive: true,
+  dereference: true,
+  filter: (src) => {
+    const base = src.slice(repoRoot.length).replace(/^[\\/]/, "");
+    if (!base) return true;
+    const top = base.split(/[\\/]/)[0];
+    return ![
+      ".git",
+      "node_modules",
+      "packages/controller/dist",
+      "qualification/evidence",
+      ".turbo",
+      "coverage",
+    ].includes(top) && top !== "packages/controller/dist";
+  },
+});
 
-try {
-  symlinkSync(repoRoot, target, linkType);
-} catch (err) {
-  const message = err instanceof Error ? err.message : String(err);
+const pluginJson = JSON.parse(
+  readFileSync(join(target, ".cursor-plugin", "plugin.json"), "utf8"),
+);
+
+if (!existsSync(join(target, "skills", "murphy", "SKILL.md"))) {
   console.error(
-    JSON.stringify(
-      {
-        ok: false,
-        error: message,
-        hint: isWindows
-          ? "Enable Windows Developer Mode, or run from an elevated shell, then retry."
-          : "Ensure the install path is writable, then retry.",
-      },
-      null,
-      2,
-    ),
+    JSON.stringify({ ok: false, error: "skills/murphy/SKILL.md missing after copy" }),
   );
   process.exit(1);
 }
-
-const pluginJson = JSON.parse(
-  readFileSync(join(repoRoot, ".cursor-plugin", "plugin.json"), "utf8"),
-);
 
 console.log(
   JSON.stringify(
@@ -56,8 +63,9 @@ console.log(
       version: pluginJson.version,
       installPath: target,
       source: repoRoot,
-      method,
+      method: "directory-copy",
       platform: process.platform,
+      note: "Reload Cursor (Developer: Reload Window). Out-of-tree symlinks are rejected.",
     },
     null,
     2,
