@@ -1,7 +1,7 @@
 {
   "name": "murphy-agent-kit",
   "displayName": "Murphy Agent Kit",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Specification-Driven Development orchestration for Cursor — controller-authoritative roles, gates, and qualification.",
   "author": {
     "name": "jaylamping"

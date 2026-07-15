@@ -216,23 +216,23 @@ export class ParallelScheduler {
   }
 }
 
+/**
+ * Principal glance is due once merged-since-checkpoint reaches min (at least every min turns).
+ * max is retained for profile docs; eligibility is count >= min.
+ */
 export function shouldInvokePrincipal(
   mergedCount: number,
-  min = 5,
-  max = 7,
+  min = 3,
+  _max = 3,
 ): boolean {
-  return mergedCount >= min && mergedCount <= max
-    ? mergedCount === min || mergedCount === max
-    : mergedCount > 0 && mergedCount % max === 0
-      ? true
-      : mergedCount >= min;
+  return mergedCount >= min;
 }
 
-/** Invoke principal when merged count reaches min..max threshold. */
+/** Principal glance due when merged count reaches min (default ≥3). */
 export function principalDue(
   mergedSinceCheckpoint: number,
-  min = 5,
-  max = 7,
+  min = 3,
+  _max = 3,
 ): boolean {
-  return mergedSinceCheckpoint >= min && mergedSinceCheckpoint <= max;
+  return mergedSinceCheckpoint >= min;
 }

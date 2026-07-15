@@ -1,9 +1,10 @@
-version: "1.1.2"
+version: "1.1.3"
 name: consumer-port-active
 description: >
   Active implementation profile after discovery/playbook freeze.
   Fan360 peer Quarkus house style; Murphy non-production-first (QA locally);
-  Principal checkpoint every 5–7 merged Stories; qualified hard maxima for parallel lanes.
+  Principal glance advisory after ≥3 merged Stories (does not pause flow);
+  hard stops only for crucial gates; qualified hard maxima for parallel lanes.
 terminology:
   epic: Epic
   story: Story
@@ -22,8 +23,9 @@ trackerFields:
     - fan360-consumer-uplift
 rolePolicy:
   principalCheckpointEvery:
-    min: 5
-    max: 7
+    min: 3
+    max: 3
+  principalCheckpointBlocking: false
   oneStoryOnePr: true
   noSelfApproval: true
   noAutomaticMerge: true

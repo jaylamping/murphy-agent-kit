@@ -40,10 +40,10 @@
     },
     {
       "id": "principal-checkpoint",
-      "name": "Principal checkpoint after 5-7 merges",
+      "name": "Principal checkpoint (advisory after ≥3 merges; does not pause unless blocking enabled)",
       "when": "before-principal-checkpoint",
       "requiredEvidence": ["merged-story-batch", "parity-or-regression-notes"],
-      "blocking": true
+      "blocking": false
     },
     {
       "id": "sdd-transition",

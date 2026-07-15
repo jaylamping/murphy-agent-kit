@@ -375,16 +375,32 @@ export class Orchestrator {
   recordMerge(storyId: string): {
     mergedCount: number;
     principalRequired: boolean;
+    principalRecommended: boolean;
   } {
     const count = this.deps.store.recordMergedStory(storyId, this.currentBatchId);
     this.mergedSinceCheckpoint = count;
     const { min, max } = this.lifecycle.principalCheckpointEvery;
-    const principalRequired = principalDue(count, min, max);
-    if (principalRequired) {
+    const due = principalDue(count, min, max);
+    const blocking = this.lifecycle.principalCheckpointBlocking === true;
+    if (due) {
+      this.deps.evidence.put(storyId, "principal-checkpoint-due", {
+        mergedCount: count,
+        min,
+        max,
+        blocking,
+      });
+    }
+    // Advisory by default: do not pause the batch. Blocking only when explicitly enabled
+    // or when a later Principal escalate / other critical gate stops the run.
+    if (due && blocking) {
       this.deps.store.setBatchState(storyId, "three-or-four-stories-merged");
       this.deps.store.setBatchState(storyId, "principal-review");
     }
-    return { mergedCount: count, principalRequired };
+    return {
+      mergedCount: count,
+      principalRequired: due && blocking,
+      principalRecommended: due,
+    };
   }
 
   applyPrincipalVerdict(

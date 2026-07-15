@@ -38,6 +38,10 @@
             "max": { "type": "integer", "minimum": 1 }
           }
         },
+        "principalCheckpointBlocking": {
+          "type": "boolean",
+          "description": "When false (default), Principal after min merges is advisory and does not pause the batch. Hard stops remain for escalate, failed tests, architect rejection, security."
+        },
         "oneStoryOnePr": { "type": "boolean" },
         "noSelfApproval": { "type": "boolean" },
         "noAutomaticMerge": { "type": "boolean" },

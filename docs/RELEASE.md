@@ -1,5 +1,34 @@
 # Release
 
+## v0.1.7 — advisory Principal (≥3 turns); hard-stop only when crucial
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.1.7` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.3` |
+| State schema version | `1` |
+| Git tag | `v0.1.7` |
+| Git SHA | _(recorded after tag)_ |
+| Qualification | 47/47 with advisory Principal assertions |
+
+### Changes since v0.1.6
+
+- `principalCheckpointBlocking: false` by default — after ≥3 merges Principal is **recommended**, batch does **not** pause
+- `principalDue` = `count >= min` (glance at least every 3 turns)
+- Hard stops remain: failed tests, missing evidence, architect rejection, escalate, security/policy
+- Profiles `1.1.3` aligned
+
+### Install this release
+
+```bash
+git checkout v0.1.7
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.1.7
+```
+
 ## v0.1.6 — Principal checkpoint every 5–7 Stories
 
 | Field | Value |
