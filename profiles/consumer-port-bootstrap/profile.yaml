@@ -1,8 +1,9 @@
-version: "1.0.0"
+version: "1.1.0"
 name: consumer-port-bootstrap
 description: >
   Bootstrap profile for fan360-consumer → Quarkus port: repository setup,
   Jira hierarchy completion, readonly discovery, and playbook creation.
+  Peer Quarkus house style (reporting/email/campaign/sms); QA-first freeze.
   No implementation Stories run under this profile.
 terminology:
   epic: Epic

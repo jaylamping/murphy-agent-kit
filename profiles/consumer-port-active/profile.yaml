@@ -1,20 +1,24 @@
-version: "1.0.0"
+version: "1.1.0"
 name: consumer-port-active
 description: >
   Active implementation profile after discovery/playbook freeze.
-  Qualified hard maxima for parallel lanes.
+  Peer Quarkus house style; QA-first delivery; qualified hard maxima for parallel lanes.
 terminology:
   epic: Epic
   story: Story
   subtask: Subtask
 trackerFields:
   inheritanceFromEpic: FAN360-13796
+  githubOrg: sporting-innovations
+  serviceRepo: sporting-innovations/consumer-service
   requiredMatchFields:
     - Team
     - Assignee
     - Product Feature
     - Labels
     - Goals
+  labels:
+    - fan360-consumer-uplift
 rolePolicy:
   principalCheckpointEvery:
     min: 3

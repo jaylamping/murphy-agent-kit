@@ -1,5 +1,34 @@
 # Release
 
+## v0.1.4 — peer house style + QA-first profiles
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.1.4` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` / `consumer-port-active` `1.1.0` |
+| State schema version | `1` |
+| Git tag | `v0.1.4` |
+| Git SHA | _(recorded after tag)_ |
+| Qualification | Unchanged from v0.1.0; see `docs/QUALIFICATION-REPORT.md` |
+
+### Changes since v0.1.3
+
+- Consumer-port profiles `1.1.0`: authoritative peer Quarkus house style (`reporting` / `email` / `campaign` / `sms`)
+- QA-first freeze/delivery posture (no prod throughput gate to start coding)
+- Active profile gains `sporting-innovations/consumer-service` tracker fields + uplift label
+- Escalate industry-standard conflicts; Behavior Ledger *what* vs peer idioms *how*
+
+### Install this release
+
+```bash
+git checkout v0.1.4
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.1.4
+```
+
 ## v0.1.3 — meet Murphy
 
 | Field | Value |
