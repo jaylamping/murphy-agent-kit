@@ -1,5 +1,9 @@
 # Murphy Agent Kit
 
+<p align="center">
+  <img src="docs/assets/murphy.jpg" alt="Murphy, the kit's namesake" width="280" />
+</p>
+
 Specification-Driven Development orchestration for Cursor.
 
 `/murphy` is the UI. The TypeScript controller owns the workflow: state, gates, worktrees, models, evidence, leases, and recovery. Intern, Junior, Senior, Architect, and Principal launch as top-level `@cursor/sdk` agents with explicit models and isolated worktrees. Skills guide behavior. They do not enforce it.

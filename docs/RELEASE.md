@@ -1,5 +1,31 @@
 # Release
 
+## v0.1.3 — meet Murphy
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.1.3` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` `1.0.0` |
+| State schema version | `1` |
+| Git tag | `v0.1.3` |
+| Git SHA | `PENDING` |
+| Qualification | Unchanged from v0.1.0; see `docs/QUALIFICATION-REPORT.md` |
+
+### Changes since v0.1.2
+
+- README features Murphy, the kit's namesake (`docs/assets/murphy.jpg`)
+
+### Install this release
+
+```bash
+git checkout v0.1.3
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.1.3
+```
+
 ## v0.1.2 — version handshake fix
 
 | Field | Value |
