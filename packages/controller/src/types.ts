@@ -1,9 +1,19 @@
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const PLUGIN_NAME = "murphy-agent-kit";
-export const PLUGIN_VERSION = "0.1.0";
+
+const packageJsonPath = join(
+  dirname(fileURLToPath(import.meta.url)),
+  "../../../package.json",
+);
+export const PLUGIN_VERSION = (
+  JSON.parse(readFileSync(packageJsonPath, "utf8")) as { version: string }
+).version;
+
 export const STATE_SCHEMA_VERSION = 1;
 
 export type Role =

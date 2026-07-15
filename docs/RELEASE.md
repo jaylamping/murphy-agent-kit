@@ -1,5 +1,32 @@
 # Release
 
+## v0.1.2 — version handshake fix
+
+| Field | Value |
+|-------|-------|
+| Plugin version | `0.1.2` |
+| Model profile | `balanced` `1.0.0` |
+| Project profile | `consumer-port-bootstrap` `1.0.0` |
+| State schema version | `1` |
+| Git tag | `v0.1.2` |
+| Git SHA | `PENDING` |
+| Qualification | Unchanged from v0.1.0; see `docs/QUALIFICATION-REPORT.md` |
+
+### Changes since v0.1.1
+
+- Controller reads `PLUGIN_VERSION` from `package.json` instead of a hardcoded `0.1.0` constant
+- Prefer this tag over `v0.1.1` for `self-test --expect-version`
+
+### Install this release
+
+```bash
+git checkout v0.1.2
+pnpm install --frozen-lockfile
+pnpm build
+pnpm run install:local
+pnpm murphy self-test --expect-version 0.1.2
+```
+
 ## v0.1.1 — docs, install, and bootstrap profile
 
 | Field | Value |
@@ -12,6 +39,8 @@
 | Git SHA | `3ae34181b0eba137e45e1f0caf2d0dfb0e8dd759` |
 | Qualification | Unchanged from v0.1.0; see `docs/QUALIFICATION-REPORT.md` |
 
+Superseded by `v0.1.2`. The controller still exported hardcoded `PLUGIN_VERSION = "0.1.0"`, so `self-test --expect-version 0.1.1` failed.
+
 ### Changes since v0.1.0
 
 - README: architecture and SDD lifecycle diagrams, roles, repo map, docs index
@@ -22,22 +51,7 @@
 
 ### Known limitations
 
-Same as v0.1.0:
-
-- Live `@cursor/sdk` agent launches require `CURSOR_API_KEY`; deterministic qualification uses mock launchers.
-- Multi-machine orchestration is unsupported in v1.
-- Walk through the live user-observed demo against this SHA before migration work.
-- Re-qualify `consumer-port-active` after discovery/playbook freeze before implementation Stories.
-
-### Install this release
-
-```bash
-git checkout v0.1.1
-pnpm install --frozen-lockfile
-pnpm build
-pnpm run install:local
-pnpm murphy self-test --expect-version 0.1.1
-```
+Same as v0.1.0. Use `v0.1.2` instead of this tag.
 
 ## v0.1.0 — initial qualified kit
 
